@@ -28,15 +28,16 @@ class Injector
     public function createInstance($class)
     {
         $reflectedClass = new \ReflectionClass($class);
-        $reflectedConstructor = $reflectedClass->getConstructor();
-        $signatureArgs = $reflectedConstructor->getParameters();
         $constructorParams = [];
-        foreach ($signatureArgs as $arg) {
-            if ($arg->hasType()) {
-                $serviceClassName = (string)$arg->getType();
-                $constructorParams[] = $this->serviceMap[$serviceClassName];
-            } elseif ($arg->isDefaultValueAvailable()) {
-                $constructorParams[] = $arg->getDefaultValue();
+        if ($reflectedConstructor = $reflectedClass->getConstructor()) {
+            $signatureArgs = $reflectedConstructor->getParameters();
+            foreach ($signatureArgs as $arg) {
+                if ($arg->hasType()) {
+                    $serviceClassName = (string)$arg->getType();
+                    $constructorParams[] = $this->serviceMap[$serviceClassName];
+                } elseif ($arg->isDefaultValueAvailable()) {
+                    $constructorParams[] = $arg->getDefaultValue();
+                }
             }
         }
 
