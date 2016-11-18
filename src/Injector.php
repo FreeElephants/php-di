@@ -3,6 +3,9 @@
 namespace FreeElephants\DI;
 
 use FreeElephants\DI\Exception\InvalidArgumentException;
+use FreeElephants\DI\Exception\OutOfBoundsException;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * @author samizdam <samizdam@inbox.ru>
@@ -12,13 +15,25 @@ class Injector
 
     private $serviceMap = [];
 
+    private $loggerHelper;
+
+    public function __construct(LoggerInterface $logger = null)
+    {
+        $this->loggerHelper = new LoggerHelper($logger ?: new NullLogger());
+    }
+
     public function setService(string $typeName, $service)
     {
         if ($service instanceof $typeName) {
+            if (isset($this->serviceMap[$typeName]) && is_object($this->serviceMap[$typeName])) {
+                $this->loggerHelper->logServiceInstanceReplacing($typeName, $service, $this->serviceMap[$typeName]);
+            }
             $this->serviceMap[$typeName] = $service;
         } else {
+            $this->loggerHelper->logNotMatchedTypeInstance($typeName, $service);
             throw new InvalidArgumentException('Given instance not belong to this type. ');
         }
+        $this->loggerHelper->logServiceSetting($typeName, $service);
     }
 
     /**
@@ -34,7 +49,7 @@ class Injector
             foreach ($signatureArgs as $arg) {
                 if ($arg->hasType()) {
                     $serviceClassName = (string)$arg->getType();
-                    $constructorParams[] = $this->serviceMap[$serviceClassName];
+                    $constructorParams[] = $this->getService($serviceClassName);
                 } elseif ($arg->isDefaultValueAvailable()) {
                     $constructorParams[] = $arg->getDefaultValue();
                 }
@@ -42,5 +57,33 @@ class Injector
         }
 
         return new $class(...$constructorParams);
+    }
+
+    public function registerService(string $implementation, string $interface = null)
+    {
+        $interface = $interface ?: $implementation;
+        if (isset($this->serviceMap[$interface])) {
+            $oldImplementation = $this->serviceMap[$interface];
+            $this->loggerHelper->logRegisterServiceReplacing($implementation, $interface, $oldImplementation);
+        }
+        $this->serviceMap[$interface] = $implementation;
+        $this->loggerHelper->logServiceRegistration($implementation, $interface);
+    }
+
+    public function getService(string $interface)
+    {
+        if (!array_key_exists($interface, $this->serviceMap)) {
+            $this->loggerHelper->logRequestNotDeterminedService($interface);
+            throw new OutOfBoundsException('Requested service with type ' . $interface . ' is not set. ');
+        }
+
+        $service = $this->serviceMap[$interface];
+        if (is_string($service)) {
+            $this->loggerHelper->logLazyLoading($interface, $service);
+            $service = $this->createInstance($service);
+            $this->setService($interface, $service);
+        }
+
+        return $service;
     }
 }

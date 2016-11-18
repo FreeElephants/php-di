@@ -1,6 +1,6 @@
 <?php
 
-namespace FreeElephants\DI\Fixture;
+namespace Fixture;
 
 /**
  * @author samizdam <samizdam@inbox.ru>

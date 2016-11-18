@@ -5,7 +5,7 @@ namespace Fixture;
 /**
  * @author samizdam <samizdam@inbox.ru>
  */
-class Bar
+class AnotherService implements AnotherServiceInterface
 {
 
 }

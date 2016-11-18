@@ -12,7 +12,9 @@
             "email": "samizdam@inbox.ru"
         }
     ],
-    "require": {},
+    "require": {
+        "psr/log": "~1.0"
+    },
     "autoload": {
         "psr-4": {
             "FreeElephants\\DI\\": "src/"
@@ -20,7 +22,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "FreeElephants\\DI\\": "tests/"
+            "FreeElephants\\DI\\": "tests/",
+            "Fixture\\": "tests/Fixture/"
         }
     }
 }
