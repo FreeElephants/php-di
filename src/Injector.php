@@ -86,4 +86,9 @@ class Injector
 
         return $service;
     }
+
+    public function hasImplementation(string $interface): bool
+    {
+        return isset($this->serviceMap[$interface]);
+    }
 }
