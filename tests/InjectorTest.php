@@ -54,7 +54,7 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
 
     public function testSetNotMatchedTypeServiceInstance()
     {
-        $injector = new Injector(new StdOutLogger());
+        $injector = new Injector();
         $this->expectException(InvalidArgumentException::class);
         $injector->setService(Foo::class, new Bar());
     }

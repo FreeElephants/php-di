@@ -1,6 +1,6 @@
 {
     "name": "free-elephants/di",
-    "description": "IoC",
+    "description": "IoC, constructor dependency injection",
     "type": "library",
     "require-dev": {
         "phpunit/phpunit": "^5.6"
