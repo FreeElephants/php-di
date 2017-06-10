@@ -22,40 +22,50 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
         $injector = new Injector();
         $bar = new Bar();
         $injector->setService(Bar::class, $bar);
+
         $foo = $injector->createInstance(Foo::class);
+
         /**@var $foo Foo */
-        self::assertSame($bar, $foo->getBar());
+        $this->assertSame($bar, $foo->getBar());
     }
 
     public function testCreateInstanceWithoutConstructor()
     {
         $injector = new Injector();
+
         $bar = $injector->createInstance(Bar::class);
-        self::assertInstanceOf(Bar::class, $bar);
+
+        $this->assertInstanceOf(Bar::class, $bar);
     }
 
     public function testRegisterService()
     {
         $injector = new Injector();
+
         $injector->registerService(SomeService::class, SomeServiceInterface::class);
         $injector->registerService(AnotherService::class, AnotherServiceInterface::class);
         /**@var $someService SomeServiceInterface*/
         $someService = $injector->getService(SomeServiceInterface::class);
         $anotherService = $injector->getService(AnotherServiceInterface::class);
-        self::assertSame($anotherService, $someService->getAnotherService());
+
+        $this->assertSame($anotherService, $someService->getAnotherService());
     }
 
     public function testGetNotRegistredService()
     {
         $injector = new Injector();
+
         $this->expectException(OutOfBoundsException::class);
+
         $injector->getService(Foo::class);
     }
 
     public function testSetNotMatchedTypeServiceInstance()
     {
         $injector = new Injector();
+
         $this->expectException(InvalidArgumentException::class);
+
         $injector->setService(Foo::class, new Bar());
     }
 
