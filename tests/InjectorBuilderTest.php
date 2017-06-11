@@ -2,6 +2,7 @@
 
 namespace FreeElephants\DI;
 
+use Fixture\AnotherService;
 use Fixture\Bar;
 use Fixture\Foo;
 
@@ -15,9 +16,11 @@ class InjectorBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new InjectorBuilder();
 
+        $anotherServiceInstance = new AnotherService();
         $injector = $builder->buildFromArray([
             'instances' => [
                 Bar::class => new Bar(),
+                $anotherServiceInstance,
             ],
             'register' => [
                 Foo::class
@@ -25,5 +28,6 @@ class InjectorBuilderTest extends \PHPUnit_Framework_TestCase
         ]);
 
         $this->assertInstanceOf(Foo::class, $injector->createInstance(Foo::class));
+        $this->assertSame($anotherServiceInstance, $injector->getService(AnotherService::class));
     }
 }

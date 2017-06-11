@@ -28,11 +28,17 @@ class InjectorBuilder
     {
         $injector = new Injector();
         $beansInstances = $components[$this->instancesKey] ?? [];
-        foreach ($beansInstances as $name => $instance) {
-            $injector->setService($name, $instance);
+        foreach ($beansInstances as $interface => $instance) {
+            if (is_int($interface)) {
+                $interface = get_class($instance);
+            }
+            $injector->setService($interface, $instance);
         }
         $registeredBeans = $components[$this->registerKey] ?? [];
         foreach ($registeredBeans as $interface => $implementation) {
+            if (is_int($interface)) {
+                $interface = $implementation;
+            }
             $injector->registerService($implementation, $interface);
         }
 
