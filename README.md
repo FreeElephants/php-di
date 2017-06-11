@@ -1,5 +1,9 @@
 # Simple PHP Constructor-based Dependency Injection
 
+[![Build Status](https://travis-ci.org/FreeElephants/php-di.svg?branch=master)](https://travis-ci.org/FreeElephants/php-di)
+
+[![codecov](https://codecov.io/gh/FreeElephants/php-di/branch/master/graph/badge.svg)](https://codecov.io/gh/FreeElephants/php-di)
+
 ## Requirements
 
 PHP 7. 
