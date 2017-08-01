@@ -2,22 +2,21 @@
 
 namespace FreeElephants\DI;
 
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 
 /**
  * @author samizdam <samizdam@inbox.ru>
  */
-class LoggerHelper
+class LoggerHelper implements LoggerAwareInterface
 {
 
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
+    use LoggerAwareTrait;
 
     public function __construct(LoggerInterface $logger)
     {
-        $this->logger = $logger;
+        $this->setLogger($logger);
     }
 
     /**

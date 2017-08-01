@@ -22,6 +22,11 @@ class Injector
         $this->loggerHelper = new LoggerHelper($logger ?: new NullLogger());
     }
 
+    public function getLoggerHelper(): LoggerHelper
+    {
+        return $this->loggerHelper;
+    }
+
     public function setService(string $typeName, $service)
     {
         if ($service instanceof $typeName) {
@@ -90,5 +95,23 @@ class Injector
     public function hasImplementation(string $interface): bool
     {
         return isset($this->serviceMap[$interface]);
+    }
+
+    public function merge(array $components, string $instancesKey = InjectorBuilder::INSTANCES_KEY, string $registerKey = InjectorBuilder::REGISTER_KEY)
+    {
+        $beansInstances = $components[$instancesKey] ?? [];
+        foreach ($beansInstances as $interface => $instance) {
+            if (is_int($interface)) {
+                $interface = get_class($instance);
+            }
+            $this->setService($interface, $instance);
+        }
+        $registeredBeans = $components[$registerKey] ?? [];
+        foreach ($registeredBeans as $interface => $implementation) {
+            if (is_int($interface)) {
+                $interface = $implementation;
+            }
+            $this->registerService($implementation, $interface);
+        }
     }
 }

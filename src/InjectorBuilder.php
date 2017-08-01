@@ -27,20 +27,8 @@ class InjectorBuilder
     public function buildFromArray(array $components): Injector
     {
         $injector = new Injector();
-        $beansInstances = $components[$this->instancesKey] ?? [];
-        foreach ($beansInstances as $interface => $instance) {
-            if (is_int($interface)) {
-                $interface = get_class($instance);
-            }
-            $injector->setService($interface, $instance);
-        }
-        $registeredBeans = $components[$this->registerKey] ?? [];
-        foreach ($registeredBeans as $interface => $implementation) {
-            if (is_int($interface)) {
-                $interface = $implementation;
-            }
-            $injector->registerService($implementation, $interface);
-        }
+
+        $injector->merge($components, $this->instancesKey, $this->registerKey);
 
         return $injector;
     }

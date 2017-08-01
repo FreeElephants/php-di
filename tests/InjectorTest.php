@@ -44,7 +44,7 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
 
         $injector->registerService(SomeService::class, SomeServiceInterface::class);
         $injector->registerService(AnotherService::class, AnotherServiceInterface::class);
-        /**@var $someService SomeServiceInterface*/
+        /**@var $someService SomeServiceInterface */
         $someService = $injector->getService(SomeServiceInterface::class);
         $anotherService = $injector->getService(AnotherServiceInterface::class);
 
@@ -67,6 +67,21 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
         $this->expectException(InvalidArgumentException::class);
 
         $injector->setService(Foo::class, new Bar());
+    }
+
+    public function testMerge()
+    {
+        $injector = new Injector();
+        $bar1 = new Bar();
+        $bar2 = new Bar();
+        $injector->setService(Bar::class, $bar1);
+
+        $injector->merge([
+            'instances' => [
+                Bar::class => $bar2,
+            ]
+        ]);
+        $this->assertSame($bar2, $injector->getService(Bar::class));
     }
 
 }
