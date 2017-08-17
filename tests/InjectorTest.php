@@ -4,6 +4,10 @@ namespace FreeElephants\DI;
 
 use Fixture\AnotherService;
 use Fixture\AnotherServiceInterface;
+use Fixture\BarChild;
+use Fixture\ClassWithDefaultConstructorArgValue;
+use Fixture\ClassWithNullableConstructorArgs;
+use Fixture\DefaultAnotherServiceImpl;
 use Fixture\SomeService;
 use Fixture\SomeServiceInterface;
 use Fixture\Bar;
@@ -27,6 +31,20 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
 
         /**@var $foo Foo */
         $this->assertSame($bar, $foo->getBar());
+    }
+
+    public function testHasImplementation()
+    {
+        $injector = new Injector();
+        $this->assertFalse($injector->hasImplementation(Bar::class));
+        $injector->registerService(Bar::class);
+        $injector->hasImplementation(Bar::class);
+    }
+
+    public function testGetLoggerHelper()
+    {
+        $injector = new Injector();
+        $this->assertInstanceOf(LoggerHelper::class, $injector->getLoggerHelper());
     }
 
     public function testCreateInstanceWithoutConstructor()
@@ -58,6 +76,40 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
         $this->expectException(OutOfBoundsException::class);
 
         $injector->getService(Foo::class);
+    }
+
+    public function testGetNotRegistredServiceWithAllowedNullableConstructorArgs()
+    {
+        $injector = new Injector();
+        $injector->allowNullableConstructorArgs(true);
+        /**@var $classWithNullableConstructorArgsInstance  ClassWithNullableConstructorArgs */
+        $classWithNullableConstructorArgsInstance = $injector->createInstance(ClassWithNullableConstructorArgs::class);
+        $this->assertInstanceOf(DefaultAnotherServiceImpl::class, $classWithNullableConstructorArgsInstance->getAnotherService());
+    }
+
+    public function testGetNotRegistredServiceWithNotAllowedNullableConstructorArgs()
+    {
+        $injector = new Injector();
+
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('Requested service with type Fixture\AnotherServiceInterface is not set. [Required in Fixture\ClassWithNullableConstructorArgs constructor]');
+        $injector->createInstance(ClassWithNullableConstructorArgs::class);
+    }
+
+    public function testDefaultConstructorArgsValueWithoutType()
+    {
+        $injector = new Injector();
+        /**@var $instance ClassWithDefaultConstructorArgValue */
+        $instance = $injector->createInstance(ClassWithDefaultConstructorArgValue::class);
+        $this->assertSame(100500, $instance->getValue());
+    }
+
+    public function testRegisterServiceReplacement()
+    {
+        $injector = new Injector();
+        $injector->registerService(Bar::class);
+        $injector->registerService(BarChild::class, Bar::class);
+        $this->assertInstanceOf(BarChild::class, $injector->getService(Bar::class));
     }
 
     public function testSetNotMatchedTypeServiceInstance()

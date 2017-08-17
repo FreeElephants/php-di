@@ -16,6 +16,10 @@ class Injector
     private $serviceMap = [];
 
     private $loggerHelper;
+    /**
+     * @var bool
+     */
+    private $allowNullableConstructorArgs = false;
 
     public function __construct(LoggerInterface $logger = null)
     {
@@ -54,7 +58,16 @@ class Injector
             foreach ($signatureArgs as $arg) {
                 if ($arg->hasType()) {
                     $serviceClassName = (string)$arg->getType();
-                    $constructorParams[] = $this->getService($serviceClassName);
+                    try {
+                        $constructorParams[] = $this->getService($serviceClassName);
+                    } catch (OutOfBoundsException $e) {
+                        if ($this->allowNullableConstructorArgs && $arg->isDefaultValueAvailable()) {
+                            $constructorParams[] = $arg->getDefaultValue();
+                        } else {
+                            $extendedMessage = sprintf('%s[Required in %s constructor]', $e->getMessage(), $class);
+                            throw new OutOfBoundsException($extendedMessage, null, $e);
+                        }
+                    }
                 } elseif ($arg->isDefaultValueAvailable()) {
                     $constructorParams[] = $arg->getDefaultValue();
                 }
@@ -113,5 +126,10 @@ class Injector
             }
             $this->registerService($implementation, $interface);
         }
+    }
+
+    public function allowNullableConstructorArgs(bool $allow)
+    {
+        $this->allowNullableConstructorArgs = $allow;
     }
 }

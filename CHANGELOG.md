@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.4.0] - 2017-08-17
+### Added
+- Allow to use default value if required type not set in container: enable with `Injector::allowNullableConstructorArgs(true)`.
+
 ## [1.3.0] - 2017-07-31
 ### Added
 - Method Injector::merge()
