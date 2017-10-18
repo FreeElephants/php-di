@@ -4,14 +4,14 @@ namespace FreeElephants\DI;
 
 use Fixture\AnotherService;
 use Fixture\AnotherServiceInterface;
+use Fixture\Bar;
 use Fixture\BarChild;
 use Fixture\ClassWithDefaultConstructorArgValue;
 use Fixture\ClassWithNullableConstructorArgs;
 use Fixture\DefaultAnotherServiceImpl;
+use Fixture\Foo;
 use Fixture\SomeService;
 use Fixture\SomeServiceInterface;
-use Fixture\Bar;
-use Fixture\Foo;
 use FreeElephants\DI\Exception\InvalidArgumentException;
 use FreeElephants\DI\Exception\OutOfBoundsException;
 
@@ -134,6 +134,13 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
             ]
         ]);
         $this->assertSame($bar2, $injector->getService(Bar::class));
+    }
+
+    public function testCreateNotRegistredTypeInstance()
+    {
+        $injector = new Injector();
+        $injector->allowInstantiateNotRegisteredTypes(true);
+        $this->assertInstanceOf(Foo::class, $injector->getService(Foo::class));
     }
 
 }

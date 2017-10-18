@@ -21,6 +21,8 @@ class Injector
      */
     private $allowNullableConstructorArgs = false;
 
+    private $allowInstantiateNotRegisteredTypes = false;
+
     public function __construct(LoggerInterface $logger = null)
     {
         $this->loggerHelper = new LoggerHelper($logger ?: new NullLogger());
@@ -88,18 +90,22 @@ class Injector
         $this->loggerHelper->logServiceRegistration($implementation, $interface);
     }
 
-    public function getService(string $interface)
+    public function getService(string $type)
     {
-        if (!array_key_exists($interface, $this->serviceMap)) {
-            $this->loggerHelper->logRequestNotDeterminedService($interface);
-            throw new OutOfBoundsException('Requested service with type ' . $interface . ' is not set. ');
+        if (!array_key_exists($type, $this->serviceMap)) {
+            if ($this->allowInstantiateNotRegisteredTypes) {
+                $this->setService($type, $this->createInstance($type));
+            } else {
+                $this->loggerHelper->logRequestNotDeterminedService($type);
+                throw new OutOfBoundsException('Requested service with type ' . $type . ' is not set. ');
+            }
         }
 
-        $service = $this->serviceMap[$interface];
+        $service = $this->serviceMap[$type];
         if (is_string($service)) {
-            $this->loggerHelper->logLazyLoading($interface, $service);
+            $this->loggerHelper->logLazyLoading($type, $service);
             $service = $this->createInstance($service);
-            $this->setService($interface, $service);
+            $this->setService($type, $service);
         }
 
         return $service;
@@ -132,4 +138,13 @@ class Injector
     {
         $this->allowNullableConstructorArgs = $allow;
     }
+
+    /**
+     * @param bool $allowInstantiateNotRegisteredTypes
+     */
+    public function allowInstantiateNotRegisteredTypes(bool $allowInstantiateNotRegisteredTypes)
+    {
+        $this->allowInstantiateNotRegisteredTypes = $allowInstantiateNotRegisteredTypes;
+    }
+
 }
