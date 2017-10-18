@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.5.1] - 2017-10-18
+### Fixed 
+- Check that argument has class (e.g. not a scalar) before try instantiate it. 
+
 ## [1.5.0] - 2017-10-18
 ### Added
 - Allow create instances of not registered types: enable with `Injector::allowInstantiateNotRegisteredTypes(true)`.

@@ -8,6 +8,7 @@ use Fixture\Bar;
 use Fixture\BarChild;
 use Fixture\ClassWithDefaultConstructorArgValue;
 use Fixture\ClassWithNullableConstructorArgs;
+use Fixture\ClassWithTypedScalarConstructorArgDefaultValue;
 use Fixture\DefaultAnotherServiceImpl;
 use Fixture\Foo;
 use Fixture\SomeService;
@@ -149,5 +150,13 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($injector->hasImplementation(Injector::class));
         $injector->registerItSelf();
         $this->assertTrue($injector->hasImplementation(Injector::class));
+    }
+
+    public function testDefaultScalarValue_with_AllowedNotRegisteredTypesInstantiation()
+    {
+        $injector = new Injector();
+        $injector->allowInstantiateNotRegisteredTypes(true);
+        $injector->allowNullableConstructorArgs(true);
+        $injector->createInstance(ClassWithTypedScalarConstructorArgDefaultValue::class);
     }
 }

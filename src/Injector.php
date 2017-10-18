@@ -58,7 +58,7 @@ class Injector
         if ($reflectedConstructor = $reflectedClass->getConstructor()) {
             $signatureArgs = $reflectedConstructor->getParameters();
             foreach ($signatureArgs as $arg) {
-                if ($arg->hasType()) {
+                if ($arg->hasType() && $arg->getClass()) {
                     $serviceClassName = (string)$arg->getType();
                     try {
                         $constructorParams[] = $this->getService($serviceClassName);
