@@ -147,4 +147,8 @@ class Injector
         $this->allowInstantiateNotRegisteredTypes = $allowInstantiateNotRegisteredTypes;
     }
 
+    public function registerItSelf()
+    {
+        $this->setService(Injector::class, $this);
+    }
 }

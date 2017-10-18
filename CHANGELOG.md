@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.5.0] - 2017-10-18
 ### Added
-- Allow create instances of not registered types: enable with `Injector::allowInstantiateNotRegisteredTypes(true)`. 
+- Allow create instances of not registered types: enable with `Injector::allowInstantiateNotRegisteredTypes(true)`.
+- Register Injector it self (useful for injection to factories): use `Injector::registerItself()`. 
 
 ## [1.4.0] - 2017-08-17
 ### Added

@@ -143,4 +143,11 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf(Foo::class, $injector->getService(Foo::class));
     }
 
+    public function testRegisterItSelf()
+    {
+        $injector = new Injector();
+        $this->assertFalse($injector->hasImplementation(Injector::class));
+        $injector->registerItSelf();
+        $this->assertTrue($injector->hasImplementation(Injector::class));
+    }
 }
