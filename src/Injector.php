@@ -4,24 +4,27 @@ namespace FreeElephants\DI;
 
 use FreeElephants\DI\Exception\InvalidArgumentException;
 use FreeElephants\DI\Exception\OutOfBoundsException;
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 /**
  * @author samizdam <samizdam@inbox.ru>
  */
-class Injector
+class Injector implements ContainerInterface
 {
 
     private $serviceMap = [];
 
     private $loggerHelper;
-    /**
-     * @var bool
-     */
+
     private $allowNullableConstructorArgs = false;
 
     private $allowInstantiateNotRegisteredTypes = false;
+
+    private $useIdAsTypeName = true;
 
     public function __construct(LoggerInterface $logger = null)
     {
@@ -35,14 +38,14 @@ class Injector
 
     public function setService(string $typeName, $service)
     {
-        if ($service instanceof $typeName) {
+        if ($this->useIdAsTypeName && false === $service instanceof $typeName) {
+            $this->loggerHelper->logNotMatchedTypeInstance($typeName, $service);
+            throw new InvalidArgumentException('Given instance not belong to this type. ');
+        } else {
             if (isset($this->serviceMap[$typeName]) && is_object($this->serviceMap[$typeName])) {
                 $this->loggerHelper->logServiceInstanceReplacing($typeName, $service, $this->serviceMap[$typeName]);
             }
             $this->serviceMap[$typeName] = $service;
-        } else {
-            $this->loggerHelper->logNotMatchedTypeInstance($typeName, $service);
-            throw new InvalidArgumentException('Given instance not belong to this type. ');
         }
         $this->loggerHelper->logServiceSetting($typeName, $service);
     }
@@ -116,8 +119,11 @@ class Injector
         return isset($this->serviceMap[$interface]);
     }
 
-    public function merge(array $components, string $instancesKey = InjectorBuilder::INSTANCES_KEY, string $registerKey = InjectorBuilder::REGISTER_KEY)
-    {
+    public function merge(
+        array $components,
+        string $instancesKey = InjectorBuilder::INSTANCES_KEY,
+        string $registerKey = InjectorBuilder::REGISTER_KEY
+    ) {
         $beansInstances = $components[$instancesKey] ?? [];
         foreach ($beansInstances as $interface => $instance) {
             if (is_int($interface)) {
@@ -150,5 +156,42 @@ class Injector
     public function registerItSelf()
     {
         $this->setService(Injector::class, $this);
+    }
+
+    /**
+     * Finds an entry of the container by its identifier and returns it.
+     *
+     * @param string $id Identifier of the entry to look for.
+     *
+     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
+     * @throws ContainerExceptionInterface Error while retrieving the entry.
+     *
+     * @return mixed Entry.
+     */
+    public function get($id)
+    {
+        return $this->getService($id);
+    }
+
+    /**
+     * Returns true if the container can return an entry for the given identifier.
+     * Returns false otherwise.
+     *
+     * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
+     * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
+     *
+     * @param string $id Identifier of the entry to look for.
+     *
+     * @return bool
+     */
+    public function has($id): bool
+    {
+        return $this->hasImplementation($id);
+    }
+
+
+    public function useIdAsTypeName(bool $useIdAsTypeName = true)
+    {
+        $this->useIdAsTypeName = $useIdAsTypeName;
     }
 }

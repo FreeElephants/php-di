@@ -2,12 +2,12 @@
 
 namespace FreeElephants\DI\Exception;
 
-use FreeElephants\DI\Exception\ExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * @author samizdam <samizdam@inbox.ru>
  */
-class OutOfBoundsException extends \OutOfBoundsException implements ExceptionInterface
+class OutOfBoundsException extends \OutOfBoundsException implements ExceptionInterface, NotFoundExceptionInterface
 {
 
 }
