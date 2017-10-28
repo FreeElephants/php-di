@@ -15,6 +15,7 @@ use Fixture\SomeService;
 use Fixture\SomeServiceInterface;
 use FreeElephants\DI\Exception\InvalidArgumentException;
 use FreeElephants\DI\Exception\OutOfBoundsException;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * @author samizdam <samizdam@inbox.ru>
@@ -85,7 +86,8 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
         $injector->allowNullableConstructorArgs(true);
         /**@var $classWithNullableConstructorArgsInstance  ClassWithNullableConstructorArgs */
         $classWithNullableConstructorArgsInstance = $injector->createInstance(ClassWithNullableConstructorArgs::class);
-        $this->assertInstanceOf(DefaultAnotherServiceImpl::class, $classWithNullableConstructorArgsInstance->getAnotherService());
+        $this->assertInstanceOf(DefaultAnotherServiceImpl::class,
+            $classWithNullableConstructorArgsInstance->getAnotherService());
     }
 
     public function testGetNotRegistredServiceWithNotAllowedNullableConstructorArgs()
@@ -159,4 +161,29 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
         $injector->allowNullableConstructorArgs(true);
         $injector->createInstance(ClassWithTypedScalarConstructorArgDefaultValue::class);
     }
+
+    public function testGet()
+    {
+        $injector = new Injector();
+        $injector->useIdAsTypeName(false);
+        $injector->registerService(Bar::class, 'bar');
+        $this->assertInstanceOf(Bar::class, $injector->get('bar'));
+    }
+
+    public function testGetNotFoundException()
+    {
+        $injector = new Injector();
+        $this->expectException(NotFoundExceptionInterface::class);
+        $injector->get('bar');
+    }
+
+    public function testHas()
+    {
+        $injector = new Injector();
+        $this->assertFalse($injector->has('bar'));
+        $injector->useIdAsTypeName(false);
+        $injector->registerService(Bar::class, 'bar');
+        $this->assertTrue($injector->has('bar'));
+    }
+
 }

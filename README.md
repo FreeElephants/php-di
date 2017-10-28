@@ -8,9 +8,13 @@
 
 [![Releases](https://img.shields.io/packagist/v/free-elephants/di.svg)](https://github.com/FreeElephants/php-di/releases)
 
+_Configure less. Do more._  
+
+Framework-agnostic Dependency Injection tool and PSR-11 implementation provider. 
+
 ## Requirements
 
-PHP 7. 
+PHP >=7.0
 
 ## Installation
 
@@ -49,6 +53,17 @@ return [
 
 The main idea: all your components should accept all dependencies as constuctor arguments.  All other work entrust to Injector.
 You do not have to want instantiate any classes directly in your code. Your must inject some factories enstead.   
+
+## Options:
+
+### `allowNullableConstructorArgs`
+Default value is `false`.  
+
+### `allowInstantiateNotRegisteredTypes` 
+Default value is `false`. When you set it `true`, you can register only specific interfaces instances. All final typed dependency will be lazy-instantiated by chain!  
+
+### `useIdAsTypeName`
+Default value is `true`. 
 
 ## Conception
 
