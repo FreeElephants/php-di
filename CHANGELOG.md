@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [1.6.0] - 2017-10-29
 ### Added
 - Psr-11 ContainerInterface implementation. 
 - Option `useIdAsTypeName` (default `true`) for control instance of checking for registered classes: disable with `Injector::useIdAsTypeName(false)`.  
@@ -45,7 +47,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - All classes. 
 
-[Unreleased]: https://github.com/FreeElephants/php-di/compare/1.5.1...HEAD
+[Unreleased]: https://github.com/FreeElephants/php-di/compare/1.6.0...HEAD
+[1.6.0]: https://github.com/FreeElephants/php-di/compare/1.5.1...1.6.0
 [1.5.1]: https://github.com/FreeElephants/php-di/compare/1.5.0...1.5.1
 [1.5.0]: https://github.com/FreeElephants/php-di/compare/1.4.0...1.5.0
 [1.4.0]: https://github.com/FreeElephants/php-di/compare/1.3.0...1.4.0
