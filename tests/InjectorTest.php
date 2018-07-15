@@ -11,11 +11,14 @@ use Fixture\ClassWithNullableConstructorArgs;
 use Fixture\ClassWithTypedScalarConstructorArgDefaultValue;
 use Fixture\DefaultAnotherServiceImpl;
 use Fixture\Foo;
+use Fixture\LoggerAwareClass;
 use Fixture\SomeService;
 use Fixture\SomeServiceInterface;
 use FreeElephants\DI\Exception\InvalidArgumentException;
 use FreeElephants\DI\Exception\OutOfBoundsException;
 use Psr\Container\NotFoundExceptionInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 /**
  * @author samizdam <samizdam@inbox.ru>
@@ -186,4 +189,19 @@ class InjectorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($injector->has('bar'));
     }
 
+    public function testLoggerInjection()
+    {
+        $logger = new NullLogger();
+
+        $injector = new Injector();
+        $injector->setService(LoggerInterface::class, $logger);
+        $injector->enableLoggerAwareInjection(true);
+
+        /**@var LoggerAwareClass $loggerAware */
+        $loggerAware = $injector->createInstance(LoggerAwareClass::class);
+        $this->assertSame($logger, $loggerAware->getLogger());
+
+    }
+
 }
+

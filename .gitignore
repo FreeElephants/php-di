@@ -2,3 +2,4 @@ phpunit.xml
 /.idea/
 /vendor/
 /tests/_coverage/
+/coverage/

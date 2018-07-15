@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- PSR-3 optional support: enable with `Injector::enableLoggerAwareInjection()`. Disabled by default. 
+
 ## [1.6.0] - 2017-10-29
 ### Added
 - Psr-11 ContainerInterface implementation. 
