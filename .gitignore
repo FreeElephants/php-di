@@ -1,4 +1,5 @@
 phpunit.xml
+composer.lock
 /.idea/
 /vendor/
 /tests/_coverage/
