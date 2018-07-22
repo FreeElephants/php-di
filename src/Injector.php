@@ -7,6 +7,7 @@ use FreeElephants\DI\Exception\OutOfBoundsException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -25,6 +26,8 @@ class Injector implements ContainerInterface
     private $allowInstantiateNotRegisteredTypes = false;
 
     private $useIdAsTypeName = true;
+
+    private $enableLoggerAwareInjection = false;
 
     public function __construct(LoggerInterface $logger = null)
     {
@@ -79,7 +82,13 @@ class Injector implements ContainerInterface
             }
         }
 
-        return new $class(...$constructorParams);
+        $instance = new $class(...$constructorParams);
+
+        if ($instance instanceof LoggerAwareInterface && $this->enableLoggerAwareInjection) {
+            $instance->setLogger($this->getService(LoggerInterface::class));
+        }
+
+        return $instance;
     }
 
     public function registerService(string $implementation, string $interface = null)
@@ -194,4 +203,10 @@ class Injector implements ContainerInterface
     {
         $this->useIdAsTypeName = $useIdAsTypeName;
     }
+
+    public function enableLoggerAwareInjection(bool $enable = true)
+    {
+        $this->enableLoggerAwareInjection = $enable;
+    }
 }
+
