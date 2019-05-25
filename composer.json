@@ -4,6 +4,11 @@
     "type": "library",
     "minimum-stability": "dev",
     "prefer-stable": true,
+    "config": {
+        "platform": {
+            "php": "*"
+        }
+    },
     "require-dev": {
         "phpunit/phpunit": "dev-master"
     },
