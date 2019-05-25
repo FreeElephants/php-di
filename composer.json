@@ -2,6 +2,8 @@
     "name": "free-elephants/di",
     "description": "IoC, constructor dependency injection",
     "type": "library",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require-dev": {
         "phpunit/phpunit": "dev-master"
     },
