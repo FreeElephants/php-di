@@ -23,7 +23,7 @@ use Psr\Log\NullLogger;
 /**
  * @author samizdam <samizdam@inbox.ru>
  */
-class InjectorTest extends \PHPUnit_Framework_TestCase
+class InjectorTest extends AbstractTestCase
 {
 
     public function testInjectionToConstructor()

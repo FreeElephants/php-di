@@ -6,6 +6,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added 
+- PHP 7.3-7.4 support. 
+
+### Removed
+- PHP 7 support (end of life). 
+
 ## [1.7.0] - 2018-07-22
 ### Added
 - PSR-3 optional support: enable with `Injector::enableLoggerAwareInjection()`. Disabled by default. 

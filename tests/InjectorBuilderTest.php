@@ -9,7 +9,7 @@ use Fixture\Foo;
 /**
  * @author samizdam <samizdam@inbox.ru>
  */
-class InjectorBuilderTest extends \PHPUnit_Framework_TestCase
+class InjectorBuilderTest extends AbstractTestCase
 {
 
     public function testBuildFromArray()
