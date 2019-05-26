@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.0.1] - 2019-05-26
+### Changed
+- Up minimal stability. 
+
 ## [2.0.0] - 2019-05-26
 ### Added 
 - PHP 7.3-7.4 support. 
@@ -61,7 +65,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - All classes. 
 
-[Unreleased]: https://github.com/FreeElephants/php-di/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/FreeElephants/php-di/compare/2.0.1...HEAD
+[2.0.1]: https://github.com/FreeElephants/php-di/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/FreeElephants/php-di/compare/1.7.0...2.0.0
 [1.7.0]: https://github.com/FreeElephants/php-di/compare/1.6.0...1.7.0
 [1.6.0]: https://github.com/FreeElephants/php-di/compare/1.5.1...1.6.0
