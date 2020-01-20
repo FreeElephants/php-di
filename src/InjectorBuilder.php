@@ -7,8 +7,8 @@ namespace FreeElephants\DI;
  */
 class InjectorBuilder
 {
-    const INSTANCES_KEY = 'instances';
-    const REGISTER_KEY = 'register';
+    public const INSTANCES_KEY = 'instances';
+    public const REGISTER_KEY = 'register';
     /**
      * @var string
      */
