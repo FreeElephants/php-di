@@ -65,7 +65,7 @@ class Injector implements ContainerInterface
             $signatureArgs = $reflectedConstructor->getParameters();
             foreach ($signatureArgs as $arg) {
                 if ($arg->hasType() && $arg->getClass()) {
-                    $serviceClassName = (string)$arg->getType();
+                    $serviceClassName = $arg->getType()->getName();
                     try {
                         $constructorParams[] = $this->getService($serviceClassName);
                     } catch (OutOfBoundsException $e) {
