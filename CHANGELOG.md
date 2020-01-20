@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.0.2] - 2020-01-20
+### Fixed
+- Use ReflectionNamedType::getName() instead deprecated ReflectionType::__toString(). 
+
 ## [2.0.1] - 2019-05-26
 ### Changed
 - Up minimal stability. 
@@ -65,7 +69,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - All classes. 
 
-[Unreleased]: https://github.com/FreeElephants/php-di/compare/2.0.1...HEAD
+[Unreleased]: https://github.com/FreeElephants/php-di/compare/2.0.2...HEAD
+[2.0.2]: https://github.com/FreeElephants/php-di/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/FreeElephants/php-di/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/FreeElephants/php-di/compare/1.7.0...2.0.0
 [1.7.0]: https://github.com/FreeElephants/php-di/compare/1.6.0...1.7.0
