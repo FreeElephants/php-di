@@ -1,9 +1,10 @@
 <?php
 
-
 namespace Fixture;
 
-
+/**
+ * @author samizdam <samizdam@inbox.ru>
+ */
 class ClassWithTypedScalarConstructorArgDefaultValue
 {
 
@@ -11,9 +12,13 @@ class ClassWithTypedScalarConstructorArgDefaultValue
      * @var int
      */
     private $value;
-    /** @var array */
+    /**
+     * @var array
+     */
     private $array;
-    /** @var null */
+    /**
+     * @var null
+     */
     private $notTypedArg;
 
     public function __construct(int $value = 100500, array $array = null, $notTypedArg = null)
