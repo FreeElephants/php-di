@@ -28,7 +28,7 @@ Your entry php script (index.php or some background-job runner)
 ```php
 $components = require 'components.php';
 $di = (new \FreeElephants\DI\InjectorBuilder)->buildFromArray($components);
-$app = $di->createInstance(YourApplication::class);
+$app = $di->createInstance(\YourApplication::class);
 $app->run();
 ```
 
@@ -37,22 +37,22 @@ Your `components.php` file with dependencies description shoud look like this:
 <?php
 
 return [
-    'instanses' => [
-        PDO::class => new PDO(getenv('DB_DNS'), getenv('DB_USER'), getenv('DB_PASS')),
+    'instances' => [
+        \PDO::class => new \PDO(getenv('DB_DNS'), getenv('DB_USER'), getenv('DB_PASS')),
     ],
     'register' => [
-        YourApplication::class,
-        ControllerFactory::class,
-        SomeService::class,
-        AnotherService::class,
-        \Psr\Log\LoggerInterface::class => Symfony\Component\Console\Logger\ConsoleLogger::class
+        \YourApplication::class,
+        \ControllerFactory::class,
+        \SomeService::class,
+        \AnotherService::class,
+        \Psr\Log\LoggerInterface::class => \Symfony\Component\Console\Logger\ConsoleLogger::class
         // etc
     ],
 ];
 ```
 
-The main idea: all your components should accept all dependencies as constuctor arguments.  All other work entrust to Injector.
-You do not have to want instantiate any classes directly in your code. Your must inject some factories enstead.   
+The main idea: all your components should expect all dependencies as constructor arguments.  All other work entrust to Injector.
+You do not have to want instantiate any classes directly in your code. Your must inject some factories instead.   
 
 ## Options:
 
@@ -60,7 +60,8 @@ You do not have to want instantiate any classes directly in your code. Your must
 Default value is `false`.  
 
 ### `allowInstantiateNotRegisteredTypes` 
-Default value is `false`. When you set it `true`, you can register only specific interfaces instances. All final typed dependency will be lazy-instantiated by chain!  
+Default value is `false`. When you set it `true`, you can register only specific interfaces instances. 
+All final typed dependency will be lazy-instantiated by chain!  
 
 ### `useIdAsTypeName`
 Default value is `true`. 
