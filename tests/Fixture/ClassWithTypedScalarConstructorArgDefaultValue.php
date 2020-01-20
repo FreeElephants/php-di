@@ -7,6 +7,7 @@ namespace Fixture;
  */
 class ClassWithTypedScalarConstructorArgDefaultValue
 {
+    public const DEFAULT_VALUE = 100500;
 
     /**
      * @var int
@@ -21,7 +22,7 @@ class ClassWithTypedScalarConstructorArgDefaultValue
      */
     private $notTypedArg;
 
-    public function __construct(int $value = 100500, array $array = null, $notTypedArg = null)
+    public function __construct(int $value = self::DEFAULT_VALUE, array $array = null, $notTypedArg = null)
     {
         $this->value = $value;
         $this->array = $array;
