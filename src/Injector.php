@@ -4,9 +4,7 @@ namespace FreeElephants\DI;
 
 use FreeElephants\DI\Exception\InvalidArgumentException;
 use FreeElephants\DI\Exception\OutOfBoundsException;
-use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -53,10 +51,6 @@ class Injector implements ContainerInterface
         $this->loggerHelper->logServiceSetting($typeName, $service);
     }
 
-    /**
-     * @param $class
-     * @return <$class>
-     */
     public function createInstance($class)
     {
         $reflectedClass = new \ReflectionClass($class);
@@ -132,7 +126,8 @@ class Injector implements ContainerInterface
         array $components,
         string $instancesKey = InjectorBuilder::INSTANCES_KEY,
         string $registerKey = InjectorBuilder::REGISTER_KEY
-    ) {
+    )
+    {
         $beansInstances = $components[$instancesKey] ?? [];
         foreach ($beansInstances as $interface => $instance) {
             if (is_int($interface)) {
@@ -154,9 +149,6 @@ class Injector implements ContainerInterface
         $this->allowNullableConstructorArgs = $allow;
     }
 
-    /**
-     * @param bool $allowInstantiateNotRegisteredTypes
-     */
     public function allowInstantiateNotRegisteredTypes(bool $allowInstantiateNotRegisteredTypes)
     {
         $this->allowInstantiateNotRegisteredTypes = $allowInstantiateNotRegisteredTypes;
@@ -168,14 +160,7 @@ class Injector implements ContainerInterface
     }
 
     /**
-     * Finds an entry of the container by its identifier and returns it.
-     *
-     * @param string $id Identifier of the entry to look for.
-     *
-     * @throws NotFoundExceptionInterface  No entry was found for **this** identifier.
-     * @throws ContainerExceptionInterface Error while retrieving the entry.
-     *
-     * @return mixed Entry.
+     * @inheritDoc
      */
     public function get($id)
     {
@@ -183,21 +168,12 @@ class Injector implements ContainerInterface
     }
 
     /**
-     * Returns true if the container can return an entry for the given identifier.
-     * Returns false otherwise.
-     *
-     * `has($id)` returning true does not mean that `get($id)` will not throw an exception.
-     * It does however mean that `get($id)` will not throw a `NotFoundExceptionInterface`.
-     *
-     * @param string $id Identifier of the entry to look for.
-     *
-     * @return bool
+     * @inheritDoc
      */
     public function has($id): bool
     {
         return $this->hasImplementation($id);
     }
-
 
     public function useIdAsTypeName(bool $useIdAsTypeName = true)
     {

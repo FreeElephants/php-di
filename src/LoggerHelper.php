@@ -19,10 +19,6 @@ class LoggerHelper implements LoggerAwareInterface
         $this->setLogger($logger);
     }
 
-    /**
-     * @param string $interface
-     * @return string
-     */
     public function logRequestNotDeterminedService(string $interface)
     {
         $msg = 'Requested service with type ' . $interface . ' is not set. Exception will be thrown. ';
@@ -32,10 +28,6 @@ class LoggerHelper implements LoggerAwareInterface
         $this->logger->critical($msg, $context);
     }
 
-    /**
-     * @param string $interface
-     * @param $service
-     */
     public function logLazyLoading(string $interface, $service)
     {
         $debugMsg = 'Set service type  ' . $interface . ' instance by lazy load. ';
@@ -46,15 +38,11 @@ class LoggerHelper implements LoggerAwareInterface
         $this->logger->debug($debugMsg, $context);
     }
 
-    /**
-     * @param string $implementation
-     * @param string $interface
-     */
     public function logServiceRegistration(string $implementation, string $interface)
     {
         $msg = 'Service with type ' . $interface . ' and implementation ' . $implementation . ' register. ';
         $context = [
-            'interface' => $interface,
+            'interface'      => $interface,
             'implementation' => $implementation,
         ];
         $this->logger->debug($msg, $context);
@@ -69,44 +57,29 @@ class LoggerHelper implements LoggerAwareInterface
         $this->logger->critical('Given instance not belong to this type. Exception will be thrown. ', $context);
     }
 
-    /**
-     * @param string $typeName
-     * @param $service
-     * @param $previousServiceInstance
-     * @return array
-     */
-    public function logServiceInstanceReplacing(string $typeName, $service, $previousServiceInstance)
+    public function logServiceInstanceReplacing(string $typeName, $service, $previousServiceInstance): array
     {
         $debugMsg = 'Replace service type  ' . $typeName . ' instance with another. ';
         $context = [
-            'typeName' => $typeName,
-            'instance' => $service,
+            'typeName'    => $typeName,
+            'instance'    => $service,
             'oldInstance' => $previousServiceInstance,
         ];
         $this->logger->debug($debugMsg, $context);
-        return array($debugMsg, $context);
+        return [$debugMsg, $context];
     }
 
-    /**
-     * @param string $implementation
-     * @param string $interface
-     * @param $oldImplementation
-     */
     public function logRegisterServiceReplacing(string $implementation, string $interface, $oldImplementation)
     {
         $msg = 'Replace registered service type ' . $interface . ' with another. ';
         $context = [
-            'interface' => $interface,
+            'interface'         => $interface,
             'newImplementation' => $implementation,
             'oldImplementation' => $oldImplementation,
         ];
         $this->logger->debug($msg, $context);
     }
 
-    /**
-     * @param string $typeName
-     * @param $service
-     */
     public function logServiceSetting(string $typeName, $service)
     {
         $debugMsg = 'Instance for service type ' . $typeName . ' was set. ';

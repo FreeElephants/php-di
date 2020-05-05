@@ -28,7 +28,7 @@ Your entry php script (index.php or some background-job runner)
 ```php
 $components = require 'components.php';
 $di = (new \FreeElephants\DI\InjectorBuilder)->buildFromArray($components);
-$app = $di->createInstance(YourApplication::class);
+$app = $di->createInstance(\YourApplication::class);
 $app->run();
 ```
 
@@ -37,22 +37,22 @@ Your `components.php` file with dependencies description shoud look like this:
 <?php
 
 return [
-    'instanses' => [
-        PDO::class => new PDO(getenv('DB_DNS'), getenv('DB_USER'), getenv('DB_PASS')),
+    'instances' => [
+        \PDO::class => new \PDO(getenv('DB_DNS'), getenv('DB_USER'), getenv('DB_PASS')),
     ],
     'register' => [
-        YourApplication::class,
-        ControllerFactory::class,
-        SomeService::class,
-        AnotherService::class,
-        \Psr\Log\LoggerInterface::class => Symfony\Component\Console\Logger\ConsoleLogger::class
+        \YourApplication::class,
+        \ControllerFactory::class,
+        \SomeService::class,
+        \AnotherService::class,
+        \Psr\Log\LoggerInterface::class => \Symfony\Component\Console\Logger\ConsoleLogger::class
         // etc
     ],
 ];
 ```
 
-The main idea: all your components should accept all dependencies as constuctor arguments.  All other work entrust to Injector.
-You do not have to want instantiate any classes directly in your code. Your must inject some factories enstead.   
+The main idea: all your components should expect all dependencies as constructor arguments.  All other work entrust to Injector.
+You do not have to want instantiate any classes directly in your code. Your must inject some factories instead.   
 
 ## Options:
 
@@ -60,7 +60,8 @@ You do not have to want instantiate any classes directly in your code. Your must
 Default value is `false`.  
 
 ### `allowInstantiateNotRegisteredTypes` 
-Default value is `false`. When you set it `true`, you can register only specific interfaces instances. All final typed dependency will be lazy-instantiated by chain!  
+Default value is `false`. When you set it `true`, you can register only specific interfaces instances. 
+All final typed dependency will be lazy-instantiated by chain!  
 
 ### `useIdAsTypeName`
 Default value is `true`. 
@@ -69,23 +70,33 @@ Default value is `true`.
 
 ## [In Russian] Простейшее внедрение зависимостей через конструктор для PHP 
 
-В объектно-ориентированном приложении в общем случае все классы можно разделить на две категории: сущности и сервисы
+В ООП можно выделить две большие группы классов по их ответственности: сущности и сервисы. 
 
-Сущности в себе хранят данные и простые методы для манипуляции с ними. Они обладают состоянием и в большинстве случаев, требуются во множестве экзепляров, создаваемых во время испольнения программы. 
-Под сущностями мы подразумеваем:
+**Сущности** содержат данные и  методы для работы с ними. 
+Они чаще всего обладают состоянием и требуются во множестве экзепляров, создаваемых во время исполнения программы. 
+Например:
 - доменные объекты (например Entities в контексте Doctrine, Models у Propel)
-- объекты для передаци данных (Data Transfer Objects)
-- Request / Response из PSR 7. 
+- Value Objects
+- объекты для передачи данных (Data Transfer Objects)
+- Request / Response из PSR 7
 
-Сервисы отвечают за всё остальное: 
-- обеспечивают коммуникацию между компонентами системы, 
-- содержат бизнес-логику,
+**Сервисы** отвечают за всё остальное: 
+- обрабатывают запрос пользователя (контроллеры, команды)
 - оперируют сущностями
+- обеспечивают коммуникацию между компонентами системы
 - инстанцируют другие сущности и сервисы (фабрики, локаторы)
 - предоставляют прикладную функциональность (протоколы, хранилища, роутинг) 
 
-Сервис, как правило, требуется в единственном экземпляре, и, в идеальном случае не обладает меняющимся во время испольнения состоянием. В принципе сервисы могут быть описаны до этапа исполнения, например в статическом файле, и быть получены в коде по требованию, или созданы единожды при запуске приложения.   
- 
-Сущности не должны зависить от сервисов. В то время, как сервисы наоборот — оперируют в большинстве случаев экземплярами сущностей. При этом сервисам свойственно использовать другие сервисы. 
+Сервис часто требуются в единственном экземпляре, и, редко меняет собственное состояние во время исполнения. 
+Сервисы могут быть описаны до этапа исполнения, например в статическом файле, и быть получены в коде по требованию, или созданы единожды при запуске приложения. 
 
-Наиболее явный и надёжный способ для внедрения зависимостей, это инъекция в конструктор.   
+Сущности не должны зависеть от сервисов. В то время, как сервисы наоборот — часто оперируют экземплярами сущностей. 
+При этом сервисы могут использовать другие сервисы. 
+
+Наиболее явный и надёжный способ внедрения зависимостей, это инъекция в конструктор:
+- нельзя создать экземпляр неготовый к использованию
+- зависимости класса обозначены контрактом в одном месте
+
+Type Hinting и рефлексия в php позволяют собрать готовый к использованию сервис на основе сигнатуры его конструктора, без лишних конфигурационных файлов и магии. 
+Такой подход использован в free-elephants/di. 
+Этот способ хорошо поддерживает рефакторинг, т.к. используется только нативный php-код, не требует статического описания зависимостей в yml, xml или аннотациях. 

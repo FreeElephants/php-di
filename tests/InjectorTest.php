@@ -34,15 +34,18 @@ class InjectorTest extends AbstractTestCase
 
         $foo = $injector->createInstance(Foo::class);
 
-        /**@var $foo Foo */
+        /**@var Foo $foo */
         $this->assertSame($bar, $foo->getBar());
     }
 
     public function testHasImplementation()
     {
         $injector = new Injector();
+
         $this->assertFalse($injector->hasImplementation(Bar::class));
+
         $injector->registerService(Bar::class);
+
         $injector->hasImplementation(Bar::class);
     }
 
@@ -67,14 +70,14 @@ class InjectorTest extends AbstractTestCase
 
         $injector->registerService(SomeService::class, SomeServiceInterface::class);
         $injector->registerService(AnotherService::class, AnotherServiceInterface::class);
-        /**@var $someService SomeServiceInterface */
+        /**@var SomeServiceInterface $someService */
         $someService = $injector->getService(SomeServiceInterface::class);
         $anotherService = $injector->getService(AnotherServiceInterface::class);
 
         $this->assertSame($anotherService, $someService->getAnotherService());
     }
 
-    public function testGetNotRegistredService()
+    public function testGetNotRegisteredService()
     {
         $injector = new Injector();
 
@@ -83,38 +86,45 @@ class InjectorTest extends AbstractTestCase
         $injector->getService(Foo::class);
     }
 
-    public function testGetNotRegistredServiceWithAllowedNullableConstructorArgs()
+    public function testGetNotRegisteredServiceWithAllowedNullableConstructorArgs()
     {
         $injector = new Injector();
+
         $injector->allowNullableConstructorArgs(true);
-        /**@var $classWithNullableConstructorArgsInstance  ClassWithNullableConstructorArgs */
+        /**@var ClassWithNullableConstructorArgs $classWithNullableConstructorArgsInstance */
         $classWithNullableConstructorArgsInstance = $injector->createInstance(ClassWithNullableConstructorArgs::class);
+
         $this->assertInstanceOf(DefaultAnotherServiceImpl::class,
             $classWithNullableConstructorArgsInstance->getAnotherService());
     }
 
-    public function testGetNotRegistredServiceWithNotAllowedNullableConstructorArgs()
+    public function testGetNotRegisteredServiceWithNotAllowedNullableConstructorArgs()
     {
         $injector = new Injector();
 
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionMessage('Requested service with type Fixture\AnotherServiceInterface is not set. [Required in Fixture\ClassWithNullableConstructorArgs constructor]');
+
         $injector->createInstance(ClassWithNullableConstructorArgs::class);
     }
 
     public function testDefaultConstructorArgsValueWithoutType()
     {
         $injector = new Injector();
-        /**@var $instance ClassWithDefaultConstructorArgValue */
+
+        /**@var ClassWithDefaultConstructorArgValue $instance */
         $instance = $injector->createInstance(ClassWithDefaultConstructorArgValue::class);
+
         $this->assertSame(100500, $instance->getValue());
     }
 
     public function testRegisterServiceReplacement()
     {
         $injector = new Injector();
+
         $injector->registerService(Bar::class);
         $injector->registerService(BarChild::class, Bar::class);
+
         $this->assertInstanceOf(BarChild::class, $injector->getService(Bar::class));
     }
 
@@ -139,21 +149,27 @@ class InjectorTest extends AbstractTestCase
                 Bar::class => $bar2,
             ]
         ]);
+
         $this->assertSame($bar2, $injector->getService(Bar::class));
     }
 
-    public function testCreateNotRegistredTypeInstance()
+    public function testCreateNotRegisteredTypeInstance()
     {
         $injector = new Injector();
+
         $injector->allowInstantiateNotRegisteredTypes(true);
+
         $this->assertInstanceOf(Foo::class, $injector->getService(Foo::class));
     }
 
     public function testRegisterItSelf()
     {
         $injector = new Injector();
+
         $this->assertFalse($injector->hasImplementation(Injector::class));
+
         $injector->registerItSelf();
+
         $this->assertTrue($injector->hasImplementation(Injector::class));
     }
 
@@ -162,7 +178,10 @@ class InjectorTest extends AbstractTestCase
         $injector = new Injector();
         $injector->allowInstantiateNotRegisteredTypes(true);
         $injector->allowNullableConstructorArgs(true);
-        $injector->createInstance(ClassWithTypedScalarConstructorArgDefaultValue::class);
+
+        $instance = $injector->createInstance(ClassWithTypedScalarConstructorArgDefaultValue::class);
+
+        $this->assertSame(ClassWithTypedScalarConstructorArgDefaultValue::DEFAULT_VALUE, $instance->getValue());
     }
 
     public function testGet()
@@ -183,9 +202,13 @@ class InjectorTest extends AbstractTestCase
     public function testHas()
     {
         $injector = new Injector();
+
         $this->assertFalse($injector->has('bar'));
+
         $injector->useIdAsTypeName(false);
+
         $injector->registerService(Bar::class, 'bar');
+
         $this->assertTrue($injector->has('bar'));
     }
 
@@ -199,8 +222,8 @@ class InjectorTest extends AbstractTestCase
 
         /**@var LoggerAwareClass $loggerAware */
         $loggerAware = $injector->createInstance(LoggerAwareClass::class);
-        $this->assertSame($logger, $loggerAware->getLogger());
 
+        $this->assertSame($logger, $loggerAware->getLogger());
     }
 
 }
