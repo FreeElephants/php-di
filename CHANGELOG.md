@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.1.0]
+### Added
+- ConfigLoaderInterface and EnvAwareConfigLoader.
+- MissingDependencyException (implements PSR interface), generally uses resolving errors. 
+
+### Fixed
+- [#10]: Throw MissingDependencyException instead Uncaught Error on missing abstraction.
+
+### Changed
+- OutOfBoundsException mark internal, handle MissingDependencyException instead.
+
 ## [2.0.2] - 2020-01-20
 ### Fixed
 - Use ReflectionNamedType::getName() instead deprecated ReflectionType::__toString(). 
@@ -39,12 +50,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.5.0] - 2017-10-18
 ### Added
-- Allow create instances of not registered types: enable with `Injector::allowInstantiateNotRegisteredTypes(true)`.
-- Register Injector it self (useful for injection to factories): use `Injector::registerItself()`. 
+- Allow creating instances of not registered types: enable with `Injector::allowInstantiateNotRegisteredTypes(true)`.
+- Register Injector itself (useful for injection to factories): use `Injector::registerItself()`. 
 
 ## [1.4.0] - 2017-08-17
 ### Added
-- Allow to use default value if required type not set in container: enable with `Injector::allowNullableConstructorArgs(true)`.
+- Allow using default value if required type not set in container: enable with `Injector::allowNullableConstructorArgs(true)`.
 
 ## [1.3.0] - 2017-07-31
 ### Added
@@ -69,7 +80,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - All classes. 
 
-[Unreleased]: https://github.com/FreeElephants/php-di/compare/2.0.2...HEAD
+[Unreleased]: https://github.com/FreeElephants/php-di/compare/2.1.0...HEAD
+[2.1.0]: https://github.com/FreeElephants/php-di/compare/2.0.2...2.1.0
 [2.0.2]: https://github.com/FreeElephants/php-di/compare/2.0.1...2.0.2
 [2.0.1]: https://github.com/FreeElephants/php-di/compare/2.0.0...2.0.1
 [2.0.0]: https://github.com/FreeElephants/php-di/compare/1.7.0...2.0.0
