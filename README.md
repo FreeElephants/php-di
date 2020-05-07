@@ -51,6 +51,17 @@ return [
 The main idea: all your components should expect all dependencies as constructor arguments.  All other work entrust to Injector.
 You do not have to want instantiate any classes directly in your code. Your must inject some factories instead.   
 
+### Override Components by Environments
+
+```php
+<?php
+// genenv('ENV') -> 'test'
+$components = (new \FreeElephants\DI\EnvAwareConfigLoader(__DIR__ . '/config', 'ENV'))->readConfig('components');
+$di = (new \FreeElephants\DI\InjectorBuilder)->buildFromArray($components);
+```
+
+`EnvAwareConfigLoader` load `config/components.php` and merge it with `config/components.test.php` if it exists.
+
 ## Options:
 
 ### `allowNullableConstructorArgs`
