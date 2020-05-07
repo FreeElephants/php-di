@@ -1,11 +1,8 @@
 # Simple PHP Constructor-based Dependency Injection
 
 [![Build Status](https://travis-ci.org/FreeElephants/php-di.svg?branch=master)](https://travis-ci.org/FreeElephants/php-di)
-
 [![codecov](https://codecov.io/gh/FreeElephants/php-di/branch/master/graph/badge.svg)](https://codecov.io/gh/FreeElephants/php-di)
-
 [![Installs](https://img.shields.io/packagist/dt/free-elephants/di.svg)](https://packagist.org/packages/free-elephants/di)
-
 [![Releases](https://img.shields.io/packagist/v/free-elephants/di.svg)](https://github.com/FreeElephants/php-di/releases)
 
 _Configure less. Do more._  
