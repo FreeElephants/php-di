@@ -3,6 +3,7 @@
 namespace FreeElephants\DI;
 
 use FreeElephants\DI\Exception\InvalidArgumentException;
+use FreeElephants\DI\Exception\MissingDependencyException;
 use FreeElephants\DI\Exception\OutOfBoundsException;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -54,6 +55,10 @@ class Injector implements ContainerInterface
     public function createInstance($class)
     {
         $reflectedClass = new \ReflectionClass($class);
+        if ($reflectedClass->isAbstract() || $reflectedClass->isInterface()) {
+            $message = sprintf('%s is abstraction, implementation should be registered as component', $class);
+            throw new MissingDependencyException($message);
+        }
         $constructorParams = [];
         if ($reflectedConstructor = $reflectedClass->getConstructor()) {
             $signatureArgs = $reflectedConstructor->getParameters();
@@ -62,12 +67,12 @@ class Injector implements ContainerInterface
                     $serviceClassName = $arg->getType()->getName();
                     try {
                         $constructorParams[] = $this->getService($serviceClassName);
-                    } catch (OutOfBoundsException $e) {
+                    } catch (MissingDependencyException $e) {
                         if ($this->allowNullableConstructorArgs && $arg->isDefaultValueAvailable()) {
                             $constructorParams[] = $arg->getDefaultValue();
                         } else {
-                            $extendedMessage = sprintf('%s[Required in %s constructor]', $e->getMessage(), $class);
-                            throw new OutOfBoundsException($extendedMessage, null, $e);
+                            $extendedMessage = sprintf('%s [Required in %s constructor]', $e->getMessage(), $class);
+                            throw new MissingDependencyException($extendedMessage, null, $e);
                         }
                     }
                 } elseif ($arg->isDefaultValueAvailable()) {
@@ -103,7 +108,7 @@ class Injector implements ContainerInterface
                 $this->setService($type, $this->createInstance($type));
             } else {
                 $this->loggerHelper->logRequestNotDeterminedService($type);
-                throw new OutOfBoundsException('Requested service with type ' . $type . ' is not set. ');
+                throw new MissingDependencyException('Requested service with type ' . $type . ' is not set');
             }
         }
 

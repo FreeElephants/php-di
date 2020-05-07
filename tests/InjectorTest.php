@@ -15,6 +15,7 @@ use Fixture\LoggerAwareClass;
 use Fixture\SomeService;
 use Fixture\SomeServiceInterface;
 use FreeElephants\DI\Exception\InvalidArgumentException;
+use FreeElephants\DI\Exception\MissingDependencyException;
 use FreeElephants\DI\Exception\OutOfBoundsException;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
@@ -103,7 +104,7 @@ class InjectorTest extends AbstractTestCase
         $injector = new Injector();
 
         $this->expectException(OutOfBoundsException::class);
-        $this->expectExceptionMessage('Requested service with type Fixture\AnotherServiceInterface is not set. [Required in Fixture\ClassWithNullableConstructorArgs constructor]');
+        $this->expectExceptionMessage('Requested service with type Fixture\AnotherServiceInterface is not set [Required in Fixture\ClassWithNullableConstructorArgs constructor]');
 
         $injector->createInstance(ClassWithNullableConstructorArgs::class);
     }
@@ -224,6 +225,15 @@ class InjectorTest extends AbstractTestCase
         $loggerAware = $injector->createInstance(LoggerAwareClass::class);
 
         $this->assertSame($logger, $loggerAware->getLogger());
+    }
+
+    public function testHandleInstantiateInterfaceError()
+    {
+        $injector = new Injector();
+        $injector->allowInstantiateNotRegisteredTypes(true);
+        $this->expectException(MissingDependencyException::class);
+        $this->expectExceptionMessage('Fixture\AnotherServiceInterface is abstraction, implementation should be registered as component');
+        $injector->get(SomeService::class);
     }
 
 }
