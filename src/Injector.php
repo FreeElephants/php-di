@@ -63,7 +63,7 @@ class Injector implements ContainerInterface
         if ($reflectedConstructor = $reflectedClass->getConstructor()) {
             $signatureArgs = $reflectedConstructor->getParameters();
             foreach ($signatureArgs as $arg) {
-                if ($arg->hasType() && $arg->getClass()) {
+                if ($arg->hasType() && !$arg->getType()->isBuiltin()) {
                     $serviceClassName = $arg->getType()->getName();
                     try {
                         $constructorParams[] = $this->getService($serviceClassName);
