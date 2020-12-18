@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Changed
+- Check that argument type is not builtin, intead deprecated `ReflectionType::getClass` usage 
 
 ## [2.1.0]
 ### Added
