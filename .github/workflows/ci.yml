@@ -4,6 +4,7 @@ on: push
 
 jobs:
   php-tests:
+    continue-on-error: ${{ matrix.php.nightly }}
     strategy:
       matrix:
         php:
