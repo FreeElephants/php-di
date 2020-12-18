@@ -5,8 +5,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Added
+- PHP 8 support
+
 ### Changed
-- Check that argument type is not builtin, intead deprecated `ReflectionType::getClass` usage 
+- Check that argument type is not builtin, intead deprecated `ReflectionType::getClass` usage
+
+### Removed
+- PHP 7.1 and 7.2 support
 
 ## [2.1.0]
 ### Added
