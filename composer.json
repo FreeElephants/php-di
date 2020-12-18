@@ -5,11 +5,11 @@
     "prefer-stable": true,
     "config": {
         "platform": {
-            "php": "7.2"
+            "php": "7.4"
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5|dev-master"
+        "phpunit/phpunit": "^8.0"
     },
     "license": "BSD-2-Clause",
     "authors": [
