@@ -4,7 +4,6 @@ namespace FreeElephants\DI;
 
 use FreeElephants\DI\Exception\InvalidArgumentException;
 use FreeElephants\DI\Exception\MissingDependencyException;
-use FreeElephants\DI\Exception\OutOfBoundsException;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
@@ -159,9 +158,13 @@ class Injector implements ContainerInterface
         $this->allowInstantiateNotRegisteredTypes = $allowInstantiateNotRegisteredTypes;
     }
 
-    public function registerItSelf()
+    public function registerItSelf(bool $asPsrContainer = true)
     {
         $this->setService(Injector::class, $this);
+
+        if ($asPsrContainer) {
+            $this->setService(ContainerInterface::class, $this);
+        }
     }
 
     /**

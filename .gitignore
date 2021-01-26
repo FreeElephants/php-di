@@ -1,5 +1,9 @@
-phpunit.xml
-composer.lock
 /.idea/
-/vendor/
+/.phpunit.result.cache
 /coverage/
+
+/composer.lock
+
+/phpunit.xml
+
+/vendor/

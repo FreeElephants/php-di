@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Register itself as PSR Container 
+
 ## [3.0.0] - 2020-12-19
 ### Added
 - PHP 8 support
