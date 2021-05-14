@@ -29,7 +29,8 @@ $app = $di->createInstance(\YourApplication::class);
 $app->run();
 ```
 
-Your `components.php` file with dependencies description shoud look like this:
+Your `components.php` file with dependencies description should look like this:
+
 ```php
 <?php
 
@@ -42,14 +43,25 @@ return [
         \ControllerFactory::class,
         \SomeService::class,
         \AnotherService::class,
-        \Psr\Log\LoggerInterface::class => \Symfony\Component\Console\Logger\ConsoleLogger::class
-        // etc
+        \Psr\Log\LoggerInterface::class => \Symfony\Component\Console\Logger\ConsoleLogger::class,
+    ],
+    'callable' => [ // first argument passed to callable is psr container  
+        Foo::class => function(\Psr\Container\ContainerInterface $container) {
+           return (new Foo())->setSomething($container->get('something'));
+        },
+        Bar::class => [ // array where first element is callable, other is values for last arguments
+            function(\Psr\Container\ContainerInterface $container, $firstArg, string $secondArg) {
+                return new Bar($firstArg, $secondArg);
+            },
+            100,
+            500,
+        ],       
     ],
 ];
 ```
 
 The main idea: all your components should expect all dependencies as constructor arguments.  All other work entrust to Injector.
-You do not have to want instantiate any classes directly in your code. Your must inject some factories instead.   
+You do not have to want to instantiate any classes directly in your code. Your must inject some factories instead.   
 
 ### Override Components by Environments
 

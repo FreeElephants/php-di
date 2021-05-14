@@ -89,7 +89,7 @@ class Injector implements ContainerInterface
         return $instance;
     }
 
-    public function registerService(string $implementation, string $interface = null)
+    public function registerService($implementation, string $interface = null)
     {
         $interface = $interface ?: $implementation;
         if (isset($this->serviceMap[$interface])) {
@@ -116,6 +116,10 @@ class Injector implements ContainerInterface
             $this->loggerHelper->logLazyLoading($type, $service);
             $service = $this->createInstance($service);
             $this->setService($type, $service);
+        } elseif (is_callable($service) || is_array($service)) {
+            $this->loggerHelper->logLazyLoading($type, $service);
+            $service = $this->createInstanceFromCallable($type, $service);
+            $this->setService($type, $service);
         }
 
         return $service;
@@ -129,7 +133,8 @@ class Injector implements ContainerInterface
     public function merge(
         array $components,
         string $instancesKey = InjectorBuilder::INSTANCES_KEY,
-        string $registerKey = InjectorBuilder::REGISTER_KEY
+        string $registerKey = InjectorBuilder::REGISTER_KEY,
+        string $callableKey = InjectorBuilder::REGISTER_KEY
     )
     {
         $beansInstances = $components[$instancesKey] ?? [];
@@ -139,12 +144,18 @@ class Injector implements ContainerInterface
             }
             $this->setService($interface, $instance);
         }
+
         $registeredBeans = $components[$registerKey] ?? [];
         foreach ($registeredBeans as $interface => $implementation) {
             if (is_int($interface)) {
                 $interface = $implementation;
             }
             $this->registerService($implementation, $interface);
+        }
+
+        $callableBeans = $components[$callableKey] ?? [];
+        foreach ($callableBeans as $interface => $callable) {
+            $this->registerService($callable, $interface);
         }
     }
 
@@ -191,6 +202,24 @@ class Injector implements ContainerInterface
     public function enableLoggerAwareInjection(bool $enable = true)
     {
         $this->enableLoggerAwareInjection = $enable;
+    }
+
+    /**
+     * @param callable|array $callable
+     * @return mixed
+     */
+    private function createInstanceFromCallable(string $key, $callable)
+    {
+        if (is_callable($callable)) {
+            $service = $callable($this, $key);
+        } elseif(is_array($callable)) {
+            $function = array_shift($callable);
+            $service = $function($this, ...$callable);
+        } else {
+            throw new InvalidArgumentException();
+        }
+
+        return $service;
     }
 }
 

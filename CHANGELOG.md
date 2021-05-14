@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added:
+- 'callable' di configuration entries support. 
+
 ### Changed
 - Register itself as PSR Container 
 
