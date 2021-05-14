@@ -67,7 +67,7 @@ You do not have to want to instantiate any classes directly in your code. Your m
 
 ```php
 <?php
-// genenv('ENV') -> 'test'
+// getenv('ENV') -> 'test'
 $components = (new \FreeElephants\DI\EnvAwareConfigLoader(__DIR__ . '/config', 'ENV'))->readConfig('components');
 $di = (new \FreeElephants\DI\InjectorBuilder)->buildFromArray($components);
 ```

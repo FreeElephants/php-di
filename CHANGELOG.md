@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 
 ### Added:
-- 'callable' di configuration entries support. 
+- 'callable' di configuration entries support
 
 ### Changed
 - Register itself as PSR Container 
@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - PHP 8 support
 
 ### Changed
-- Check that argument type is not builtin, intead deprecated `ReflectionType::getClass` usage
+- Check that argument type is not builtin, instead deprecated `ReflectionType::getClass` usage
 
 ### Removed
 - PHP 7.1 and 7.2 support
