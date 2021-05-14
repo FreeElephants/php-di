@@ -11,7 +11,7 @@ Framework-agnostic Dependency Injection tool and PSR-11 implementation provider.
 
 ## Requirements
 
-PHP >=7.1
+PHP >=7.3
 
 ## Installation
 
