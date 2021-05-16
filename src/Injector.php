@@ -71,7 +71,7 @@ class Injector implements ContainerInterface
                             $constructorParams[] = $arg->getDefaultValue();
                         } else {
                             $extendedMessage = sprintf('%s [Required in %s constructor]', $e->getMessage(), $class);
-                            throw new MissingDependencyException($extendedMessage, null, $e);
+                            throw new MissingDependencyException($extendedMessage, 0, $e);
                         }
                     }
                 } elseif ($arg->isDefaultValueAvailable()) {
