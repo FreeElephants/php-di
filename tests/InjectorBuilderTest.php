@@ -42,7 +42,7 @@ class InjectorBuilderTest extends AbstractTestCase
             ],
         ]);
 
-        $this->assertSame($bar2, $injector->get(Bar::class));
+        $this->assertSame($bar2, $injector->getService(Bar::class));
         $this->assertInstanceOf(Foo::class, $injector->createInstance(Foo::class));
         $this->assertSame($anotherServiceInstance, $injector->getService(AnotherService::class));
         $this->assertSame(9000, $injector->get(ClassWithDefaultConstructorArgValue::class)->getValue());

@@ -92,6 +92,11 @@ class LoggerHelper implements LoggerAwareInterface
 
     private function stringifyImplementation($implementation): string
     {
+        // var_export does not handle circular references
+        // handle this case
+        if($implementation instanceof CallableBeanContainer) {
+            $implementation = 'user defined callable';
+        }
         return var_export($implementation, true);
     }
 }

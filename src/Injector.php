@@ -116,9 +116,9 @@ class Injector implements ContainerInterface
             $this->loggerHelper->logLazyLoading($type, $service);
             $service = $this->createInstance($service);
             $this->setService($type, $service);
-        } elseif (is_callable($service) || is_array($service)) {
+        } elseif ($service instanceof CallableBeanContainer) {
             $this->loggerHelper->logLazyLoading($type, $service);
-            $service = $this->createInstanceFromCallable($type, $service);
+            $service = $service();
             $this->setService($type, $service);
         }
 
@@ -134,7 +134,7 @@ class Injector implements ContainerInterface
         array $components,
         string $instancesKey = InjectorBuilder::INSTANCES_KEY,
         string $registerKey = InjectorBuilder::REGISTER_KEY,
-        string $callableKey = InjectorBuilder::REGISTER_KEY
+        string $callableKey = InjectorBuilder::CALLABLE_KEY
     )
     {
         $beansInstances = $components[$instancesKey] ?? [];
@@ -155,7 +155,7 @@ class Injector implements ContainerInterface
 
         $callableBeans = $components[$callableKey] ?? [];
         foreach ($callableBeans as $interface => $callable) {
-            $this->registerService($callable, $interface);
+            $this->registerService(new CallableBeanContainer($interface, $callable, $this), $interface);
         }
     }
 
@@ -202,24 +202,5 @@ class Injector implements ContainerInterface
     public function enableLoggerAwareInjection(bool $enable = true)
     {
         $this->enableLoggerAwareInjection = $enable;
-    }
-
-    /**
-     * @param callable|array $callable
-     * @return mixed
-     */
-    private function createInstanceFromCallable(string $key, $callable)
-    {
-        if (is_callable($callable)) {
-            $service = $callable($this, $key);
-        } elseif(is_array($callable)) {
-            $function = array_shift($callable);
-            $service = $function($this, ...$callable);
-        } else {
-            throw new InvalidArgumentException();
-        }
-
-        return $service;
-    }
-}
+    }}
 
