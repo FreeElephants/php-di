@@ -236,5 +236,19 @@ class InjectorTest extends AbstractTestCase
         $injector->get(SomeService::class);
     }
 
+    public function testGetServiceWithInvalidCallable()
+    {
+        $injector = new Injector();
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $injector->merge([
+            InjectorBuilder::CALLABLE_KEY => [
+                'foo' => 'not_callable',
+            ],
+        ]);
+    }
+
+
 }
 

@@ -71,7 +71,7 @@ class Injector implements ContainerInterface
                             $constructorParams[] = $arg->getDefaultValue();
                         } else {
                             $extendedMessage = sprintf('%s [Required in %s constructor]', $e->getMessage(), $class);
-                            throw new MissingDependencyException($extendedMessage, null, $e);
+                            throw new MissingDependencyException($extendedMessage, 0, $e);
                         }
                     }
                 } elseif ($arg->isDefaultValueAvailable()) {
@@ -89,7 +89,7 @@ class Injector implements ContainerInterface
         return $instance;
     }
 
-    public function registerService(string $implementation, string $interface = null)
+    public function registerService($implementation, string $interface = null)
     {
         $interface = $interface ?: $implementation;
         if (isset($this->serviceMap[$interface])) {
@@ -116,6 +116,10 @@ class Injector implements ContainerInterface
             $this->loggerHelper->logLazyLoading($type, $service);
             $service = $this->createInstance($service);
             $this->setService($type, $service);
+        } elseif ($service instanceof CallableBeanContainer) {
+            $this->loggerHelper->logLazyLoading($type, $service);
+            $service = $service();
+            $this->setService($type, $service);
         }
 
         return $service;
@@ -129,7 +133,8 @@ class Injector implements ContainerInterface
     public function merge(
         array $components,
         string $instancesKey = InjectorBuilder::INSTANCES_KEY,
-        string $registerKey = InjectorBuilder::REGISTER_KEY
+        string $registerKey = InjectorBuilder::REGISTER_KEY,
+        string $callableKey = InjectorBuilder::CALLABLE_KEY
     )
     {
         $beansInstances = $components[$instancesKey] ?? [];
@@ -139,12 +144,18 @@ class Injector implements ContainerInterface
             }
             $this->setService($interface, $instance);
         }
+
         $registeredBeans = $components[$registerKey] ?? [];
         foreach ($registeredBeans as $interface => $implementation) {
             if (is_int($interface)) {
                 $interface = $implementation;
             }
             $this->registerService($implementation, $interface);
+        }
+
+        $callableBeans = $components[$callableKey] ?? [];
+        foreach ($callableBeans as $interface => $callable) {
+            $this->registerService(new CallableBeanContainer($interface, $callable, $this), $interface);
         }
     }
 
@@ -191,6 +202,5 @@ class Injector implements ContainerInterface
     public function enableLoggerAwareInjection(bool $enable = true)
     {
         $this->enableLoggerAwareInjection = $enable;
-    }
-}
+    }}
 

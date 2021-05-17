@@ -11,7 +11,7 @@ Framework-agnostic Dependency Injection tool and PSR-11 implementation provider.
 
 ## Requirements
 
-PHP >=7.1
+PHP >=7.3|8.0
 
 ## Installation
 
@@ -29,7 +29,8 @@ $app = $di->createInstance(\YourApplication::class);
 $app->run();
 ```
 
-Your `components.php` file with dependencies description shoud look like this:
+Your `components.php` file with dependencies description should look like this:
+
 ```php
 <?php
 
@@ -42,20 +43,37 @@ return [
         \ControllerFactory::class,
         \SomeService::class,
         \AnotherService::class,
-        \Psr\Log\LoggerInterface::class => \Symfony\Component\Console\Logger\ConsoleLogger::class
-        // etc
+        \Psr\Log\LoggerInterface::class => \Symfony\Component\Console\Logger\ConsoleLogger::class,
+    ],
+    'callable' => [ 
+        // if function provided as key value
+        // first argument passed to callable is psr container
+        // second is key
+        Foo::class => function(\Psr\Container\ContainerInterface $container, string $key) {
+           return (new Foo())->setSomething($container->get('something'));
+        },
+        // if array provided as key value
+        // first argument passed to callable is psr container
+        // remaining element as ...args tail
+        Bar::class => [ // array where first element is callable, other is values for last arguments
+            function(\Psr\Container\ContainerInterface $container, $firstArg, string $secondArg) {
+                return new Bar($firstArg, $secondArg);
+            },
+            100,
+            500,
+        ],       
     ],
 ];
 ```
 
 The main idea: all your components should expect all dependencies as constructor arguments.  All other work entrust to Injector.
-You do not have to want instantiate any classes directly in your code. Your must inject some factories instead.   
+You do not have to want to instantiate any classes directly in your code. Your must inject some factories instead.   
 
 ### Override Components by Environments
 
 ```php
 <?php
-// genenv('ENV') -> 'test'
+// getenv('ENV') -> 'test'
 $components = (new \FreeElephants\DI\EnvAwareConfigLoader(__DIR__ . '/config', 'ENV'))->readConfig('components');
 $di = (new \FreeElephants\DI\InjectorBuilder)->buildFromArray($components);
 ```

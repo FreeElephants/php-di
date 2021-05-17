@@ -38,9 +38,9 @@ class LoggerHelper implements LoggerAwareInterface
         $this->logger->debug($debugMsg, $context);
     }
 
-    public function logServiceRegistration(string $implementation, string $interface)
+    public function logServiceRegistration($implementation, string $interface)
     {
-        $msg = 'Service with type ' . $interface . ' and implementation ' . $implementation . ' register. ';
+        $msg = 'Service with type ' . $interface . ' and implementation ' . $this->stringifyImplementation($implementation) . ' register. ';
         $context = [
             'interface'      => $interface,
             'implementation' => $implementation,
@@ -69,7 +69,7 @@ class LoggerHelper implements LoggerAwareInterface
         return [$debugMsg, $context];
     }
 
-    public function logRegisterServiceReplacing(string $implementation, string $interface, $oldImplementation)
+    public function logRegisterServiceReplacing($implementation, string $interface, $oldImplementation)
     {
         $msg = 'Replace registered service type ' . $interface . ' with another. ';
         $context = [
@@ -88,5 +88,15 @@ class LoggerHelper implements LoggerAwareInterface
             'instance' => $service
         ];
         $this->logger->debug($debugMsg, $context);
+    }
+
+    private function stringifyImplementation($implementation): string
+    {
+        // var_export does not handle circular references
+        // handle this case
+        if($implementation instanceof CallableBeanContainer) {
+            $implementation = 'user defined callable';
+        }
+        return var_export($implementation, true);
     }
 }
