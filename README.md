@@ -11,7 +11,7 @@ Framework-agnostic Dependency Injection tool and PSR-11 implementation provider.
 
 ## Requirements
 
-PHP >=7.3
+PHP >=7.3|8.0
 
 ## Installation
 
@@ -45,10 +45,16 @@ return [
         \AnotherService::class,
         \Psr\Log\LoggerInterface::class => \Symfony\Component\Console\Logger\ConsoleLogger::class,
     ],
-    'callable' => [ // first argument passed to callable is psr container  
-        Foo::class => function(\Psr\Container\ContainerInterface $container) {
+    'callable' => [ 
+        // if function provided as key value
+        // first argument passed to callable is psr container
+        // second is key
+        Foo::class => function(\Psr\Container\ContainerInterface $container, string $key) {
            return (new Foo())->setSomething($container->get('something'));
         },
+        // if array provided as key value
+        // first argument passed to callable is psr container
+        // remaining element as ...args tail
         Bar::class => [ // array where first element is callable, other is values for last arguments
             function(\Psr\Container\ContainerInterface $container, $firstArg, string $secondArg) {
                 return new Bar($firstArg, $secondArg);
