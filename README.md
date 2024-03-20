@@ -16,7 +16,7 @@ PHP >=7.3|8.0
 ## Installation
 
 ```bash
-composer install free-elephants/di
+composer require free-elephants/di
 ```
 
 ## Usage
