@@ -11,7 +11,7 @@ Framework-agnostic Dependency Injection tool and PSR-11 implementation provider.
 
 ## Requirements
 
-PHP >=7.3|8.0
+PHP >=8.0
 
 ## Installation
 
@@ -63,6 +63,12 @@ return [
             500,
         ],       
     ],
+    'loggers' => [
+       // For suitable logger injections use map, where keys are your services, that implement LoggerAwareInterface
+       // and value is logger instances
+       LoggerAwareClass::class        => $logger,
+       AnotherLoggerAwareClass::class => $anotherLogger,
+    ],   
 ];
 ```
 
@@ -83,14 +89,23 @@ $di = (new \FreeElephants\DI\InjectorBuilder)->buildFromArray($components);
 ## Options:
 
 ### `allowNullableConstructorArgs`
+
 Default value is `false`.  
 
 ### `allowInstantiateNotRegisteredTypes` 
+
 Default value is `false`. When you set it `true`, you can register only specific interfaces instances. 
 All final typed dependency will be lazy-instantiated by chain!  
 
 ### `useIdAsTypeName`
+
 Default value is `true`. 
+
+### `enableLoggerAwareInjection`
+
+Default value is `false`.
+
+Allow to set LoggerInterface into LoggerAwareInterface instances after constructing, or use loggers map if type present.   
 
 ## Conception
 
