@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Test with new php versions, drop 7.x support
+
 ## [3.1.1] - 2021-09-02
 ### Changed
 - Support all versions of psr/log and psr/container 
