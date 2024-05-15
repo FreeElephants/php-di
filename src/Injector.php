@@ -27,6 +27,8 @@ class Injector implements ContainerInterface
 
     private $enableLoggerAwareInjection = false;
 
+    private array $loggersMap = [];
+
     public function __construct(LoggerInterface $logger = null)
     {
         $this->loggerHelper = new LoggerHelper($logger ?: new NullLogger());
@@ -82,8 +84,14 @@ class Injector implements ContainerInterface
 
         $instance = new $class(...$constructorParams);
 
-        if ($instance instanceof LoggerAwareInterface && $this->enableLoggerAwareInjection) {
-            $instance->setLogger($this->getService(LoggerInterface::class));
+        if ($this->isLoggerInjectionRequired($instance)) {
+            if(array_key_exists($class, $this->loggersMap)) {
+                $logger = $this->loggersMap[$class];
+            } else {
+                $logger = $this->getService(LoggerInterface::class);
+            }
+
+            $instance->setLogger($logger);
         }
 
         return $instance;
@@ -202,5 +210,21 @@ class Injector implements ContainerInterface
     public function enableLoggerAwareInjection(bool $enable = true)
     {
         $this->enableLoggerAwareInjection = $enable;
-    }}
+    }
+
+    public function getLoggersMap(): array
+    {
+        return $this->loggersMap;
+    }
+
+    public function setLoggersMap(array $map)
+    {
+        $this->loggersMap = $map;
+    }
+
+    private function isLoggerInjectionRequired(mixed $instance): bool
+    {
+        return $instance instanceof LoggerAwareInterface && $this->enableLoggerAwareInjection;
+    }
+}
 

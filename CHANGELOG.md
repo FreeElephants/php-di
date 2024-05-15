@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Logger mapping configuration.  
+
 ### Changed
 - Test with new php versions, drop 7.x support
 

@@ -2,6 +2,7 @@
 
 namespace FreeElephants\DI;
 
+use Fixture\AnotherLoggerAwareClass;
 use Fixture\AnotherService;
 use Fixture\AnotherServiceInterface;
 use Fixture\Bar;
@@ -225,6 +226,27 @@ class InjectorTest extends AbstractTestCase
         $loggerAware = $injector->createInstance(LoggerAwareClass::class);
 
         $this->assertSame($logger, $loggerAware->getLogger());
+    }
+
+    public function testLoggerMap()
+    {
+        $logger = new NullLogger();
+        $anotherLogger = new NullLogger();
+
+        $injector = new Injector();
+        $injector->allowInstantiateNotRegisteredTypes(true);
+        $injector->enableLoggerAwareInjection();
+        $injector->setLoggersMap([
+            LoggerAwareClass::class        => $logger,
+            AnotherLoggerAwareClass::class => $anotherLogger,
+        ]);
+
+        /** @var LoggerAwareClass $loggerAwareInstance */
+        $loggerAwareInstance = $injector->get(LoggerAwareClass::class);
+        $this->assertSame($logger, $loggerAwareInstance->getLogger());
+        /** @var AnotherLoggerAwareClass $anotherLoggerAwareInstance */
+        $anotherLoggerAwareInstance = $injector->get(AnotherLoggerAwareClass::class);
+        $this->assertSame($anotherLogger, $anotherLoggerAwareInstance->getLogger());
     }
 
     public function testHandleInstantiateInterfaceError()
