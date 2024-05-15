@@ -11,19 +11,10 @@ class InjectorBuilder
     public const REGISTER_KEY  = 'register';
     public const CALLABLE_KEY  = 'callable';
     public const LOGGERS_KEY   = 'loggers';
-    /**
-     * @var string
-     */
-    private $instancesKey;
-    /**
-     * @var string
-     */
-    private $registerKey;
-    /**
-     * @var string
-     */
-    private $callableKey;
 
+    private string $instancesKey;
+    private string $registerKey;
+    private string $callableKey;
     private string $loggersKey;
 
     public function __construct(

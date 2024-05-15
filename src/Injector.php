@@ -15,17 +15,17 @@ use Psr\Log\NullLogger;
 class Injector implements ContainerInterface
 {
 
-    private $serviceMap = [];
+    private array $serviceMap = [];
 
-    private $loggerHelper;
+    private LoggerHelper $loggerHelper;
 
-    private $allowNullableConstructorArgs = false;
+    private bool $allowNullableConstructorArgs = false;
 
-    private $allowInstantiateNotRegisteredTypes = false;
+    private bool $allowInstantiateNotRegisteredTypes = false;
 
-    private $useIdAsTypeName = true;
+    private bool $useIdAsTypeName = true;
 
-    private $enableLoggerAwareInjection = false;
+    private bool $enableLoggerAwareInjection = false;
 
     private array $loggersMap = [];
 
@@ -39,7 +39,7 @@ class Injector implements ContainerInterface
         return $this->loggerHelper;
     }
 
-    public function setService(string $typeName, $service)
+    public function setService(string $typeName, $service): void
     {
         if ($this->useIdAsTypeName && false === $service instanceof $typeName) {
             $this->loggerHelper->logNotMatchedTypeInstance($typeName, $service);
@@ -53,7 +53,7 @@ class Injector implements ContainerInterface
         $this->loggerHelper->logServiceSetting($typeName, $service);
     }
 
-    public function createInstance($class)
+    public function createInstance($class): object
     {
         $reflectedClass = new \ReflectionClass($class);
         if ($reflectedClass->isAbstract() || $reflectedClass->isInterface()) {
@@ -97,7 +97,7 @@ class Injector implements ContainerInterface
         return $instance;
     }
 
-    public function registerService($implementation, string $interface = null)
+    public function registerService($implementation, string $interface = null): void
     {
         $interface = $interface ?: $implementation;
         if (isset($this->serviceMap[$interface])) {
@@ -108,7 +108,7 @@ class Injector implements ContainerInterface
         $this->loggerHelper->logServiceRegistration($implementation, $interface);
     }
 
-    public function getService(string $type)
+    public function getService(string $type): object
     {
         if (!array_key_exists($type, $this->serviceMap)) {
             if ($this->allowInstantiateNotRegisteredTypes) {
@@ -143,7 +143,7 @@ class Injector implements ContainerInterface
         string $instancesKey = InjectorBuilder::INSTANCES_KEY,
         string $registerKey = InjectorBuilder::REGISTER_KEY,
         string $callableKey = InjectorBuilder::CALLABLE_KEY
-    )
+    ): void
     {
         $beansInstances = $components[$instancesKey] ?? [];
         foreach ($beansInstances as $interface => $instance) {
@@ -167,17 +167,17 @@ class Injector implements ContainerInterface
         }
     }
 
-    public function allowNullableConstructorArgs(bool $allow)
+    public function allowNullableConstructorArgs(bool $allow): void
     {
         $this->allowNullableConstructorArgs = $allow;
     }
 
-    public function allowInstantiateNotRegisteredTypes(bool $allowInstantiateNotRegisteredTypes)
+    public function allowInstantiateNotRegisteredTypes(bool $allowInstantiateNotRegisteredTypes): void
     {
         $this->allowInstantiateNotRegisteredTypes = $allowInstantiateNotRegisteredTypes;
     }
 
-    public function registerItSelf(bool $asPsrContainer = true)
+    public function registerItSelf(bool $asPsrContainer = true): void
     {
         $this->setService(Injector::class, $this);
 
@@ -202,12 +202,12 @@ class Injector implements ContainerInterface
         return $this->hasImplementation($id);
     }
 
-    public function useIdAsTypeName(bool $useIdAsTypeName = true)
+    public function useIdAsTypeName(bool $useIdAsTypeName = true): void
     {
         $this->useIdAsTypeName = $useIdAsTypeName;
     }
 
-    public function enableLoggerAwareInjection(bool $enable = true)
+    public function enableLoggerAwareInjection(bool $enable = true): void
     {
         $this->enableLoggerAwareInjection = $enable;
     }
@@ -217,7 +217,7 @@ class Injector implements ContainerInterface
         return $this->loggersMap;
     }
 
-    public function setLoggersMap(array $map)
+    public function setLoggersMap(array $map): void
     {
         $this->loggersMap = $map;
     }
