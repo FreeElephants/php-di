@@ -5,8 +5,8 @@ namespace FreeElephants\DI;
 class EnvAwareConfigLoader implements ConfigLoaderInterface
 {
     private const DEFAULT_ENV_VAR_NAME = 'ENV';
-    private $envVariableName;
-    private $configBasePath;
+    private string $envVariableName;
+    private string $configBasePath;
 
     public function __construct(string $configBasePath, string $envVariableName = self::DEFAULT_ENV_VAR_NAME)
     {
