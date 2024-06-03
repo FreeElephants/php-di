@@ -11,10 +11,7 @@ jobs:
         php:
           - 7.4
           - 8.0
-        include:
-          - php: 8.1
-            prefer: stable
-            experimental: true
+          - 8.1
         prefer:
           - lowest
           - stable
