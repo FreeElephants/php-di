@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Logger mapping configuration
 
+### Removed 
+- PHP 7.3 support 
+
 ## [3.1.1] - 2021-09-02
 ### Changed
 - Support all versions of psr/log and psr/container 

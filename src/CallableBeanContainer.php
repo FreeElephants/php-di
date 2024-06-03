@@ -10,7 +10,7 @@ class CallableBeanContainer
     /**
      * @var callable|mixed
      */
-    private mixed $function;
+    private $function;
     private array $args;
 
     public function __construct(string $interface, $callable, ContainerInterface $container)

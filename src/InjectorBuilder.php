@@ -21,7 +21,7 @@ class InjectorBuilder
         string $instancesKey = self::INSTANCES_KEY,
         string $registerKey = self::REGISTER_KEY,
         string $callableKey = self::CALLABLE_KEY,
-        string $loggersKey = self::LOGGERS_KEY,
+        string $loggersKey = self::LOGGERS_KEY
     )
     {
         $this->instancesKey = $instancesKey;
