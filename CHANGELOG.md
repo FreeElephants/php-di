@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.0.0] - 2024-06-03
+
 ### Added
 - Logger mapping configuration
 - New PHP versions support
@@ -108,7 +110,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - All classes. 
 
-[Unreleased]: https://github.com/FreeElephants/php-di/compare/3.1.1...HEAD
+[Unreleased]: https://github.com/FreeElephants/php-di/compare/4.0.0...HEAD
+[4.0.0]: https://github.com/FreeElephants/php-di/compare/3.1.1...4.0.0
 [3.1.1]: https://github.com/FreeElephants/php-di/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/FreeElephants/php-di/compare/3.0.0...3.1.0
 [3.0.0]: https://github.com/FreeElephants/php-di/compare/2.1.0...3.0.0
