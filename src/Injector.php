@@ -222,7 +222,7 @@ class Injector implements ContainerInterface
         $this->loggersMap = $map;
     }
 
-    private function isLoggerInjectionRequired(mixed $instance): bool
+    private function isLoggerInjectionRequired(object $instance): bool
     {
         return $instance instanceof LoggerAwareInterface && $this->enableLoggerAwareInjection;
     }
