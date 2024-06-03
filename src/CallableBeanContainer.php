@@ -8,13 +8,10 @@ use Psr\Container\ContainerInterface;
 class CallableBeanContainer
 {
     /**
-     * @var callable|mixed|null
+     * @var callable|mixed
      */
     private $function;
-    /**
-     * @var array
-     */
-    private $args;
+    private array $args;
 
     public function __construct(string $interface, $callable, ContainerInterface $container)
     {

@@ -19,7 +19,7 @@ class LoggerHelper implements LoggerAwareInterface
         $this->setLogger($logger);
     }
 
-    public function logRequestNotDeterminedService(string $interface)
+    public function logRequestNotDeterminedService(string $interface): void
     {
         $msg = 'Requested service with type ' . $interface . ' is not set. Exception will be thrown. ';
         $context = [
@@ -28,7 +28,7 @@ class LoggerHelper implements LoggerAwareInterface
         $this->logger->critical($msg, $context);
     }
 
-    public function logLazyLoading(string $interface, $service)
+    public function logLazyLoading(string $interface, $service): void
     {
         $debugMsg = 'Set service type  ' . $interface . ' instance by lazy load. ';
         $context = [
@@ -38,7 +38,7 @@ class LoggerHelper implements LoggerAwareInterface
         $this->logger->debug($debugMsg, $context);
     }
 
-    public function logServiceRegistration($implementation, string $interface)
+    public function logServiceRegistration($implementation, string $interface): void
     {
         $msg = 'Service with type ' . $interface . ' and implementation ' . $this->stringifyImplementation($implementation) . ' register. ';
         $context = [
@@ -48,7 +48,7 @@ class LoggerHelper implements LoggerAwareInterface
         $this->logger->debug($msg, $context);
     }
 
-    public function logNotMatchedTypeInstance(string $typeName, $instance)
+    public function logNotMatchedTypeInstance(string $typeName, $instance): void
     {
         $context = [
             'typeName' => $typeName,
@@ -69,7 +69,7 @@ class LoggerHelper implements LoggerAwareInterface
         return [$debugMsg, $context];
     }
 
-    public function logRegisterServiceReplacing($implementation, string $interface, $oldImplementation)
+    public function logRegisterServiceReplacing($implementation, string $interface, $oldImplementation): void
     {
         $msg = 'Replace registered service type ' . $interface . ' with another. ';
         $context = [
@@ -80,7 +80,7 @@ class LoggerHelper implements LoggerAwareInterface
         $this->logger->debug($msg, $context);
     }
 
-    public function logServiceSetting(string $typeName, $service)
+    public function logServiceSetting(string $typeName, $service): void
     {
         $debugMsg = 'Instance for service type ' . $typeName . ' was set. ';
         $context = [
