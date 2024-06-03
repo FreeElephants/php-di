@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Logger mapping configuration
+- New PHP versions support
 
 ### Removed 
 - PHP 7.3 support 
