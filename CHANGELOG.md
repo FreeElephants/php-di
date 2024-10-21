@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.0.1] - 2024-10-09
+
+### Fixed
+- Use simple string instead var_export on logging, prevent `Warning: var_export does not handle circular references in LoggerHelper`
+
 ## [4.0.0] - 2024-06-03
 
 ### Added
@@ -110,7 +115,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - All classes. 
 
-[Unreleased]: https://github.com/FreeElephants/php-di/compare/4.0.0...HEAD
+[Unreleased]: https://github.com/FreeElephants/php-di/compare/4.0.1...HEAD
+[4.0.1]: https://github.com/FreeElephants/php-di/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/FreeElephants/php-di/compare/3.1.1...4.0.0
 [3.1.1]: https://github.com/FreeElephants/php-di/compare/3.1.0...3.1.1
 [3.1.0]: https://github.com/FreeElephants/php-di/compare/3.0.0...3.1.0
