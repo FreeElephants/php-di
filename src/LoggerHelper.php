@@ -99,6 +99,6 @@ class LoggerHelper implements LoggerAwareInterface
             $implementation = get_class($implementation);
         }
 
-        return $implementation;
+        return (string) $implementation;
     }
 }
