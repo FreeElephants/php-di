@@ -232,13 +232,14 @@ class InjectorTest extends AbstractTestCase
     {
         $logger = new NullLogger();
         $anotherLogger = new NullLogger();
+        $anotherLoggerCallable = fn() => $anotherLogger;
 
         $injector = new Injector();
         $injector->allowInstantiateNotRegisteredTypes(true);
         $injector->enableLoggerAwareInjection();
         $injector->setLoggersMap([
             LoggerAwareClass::class        => $logger,
-            AnotherLoggerAwareClass::class => $anotherLogger,
+            AnotherLoggerAwareClass::class => $anotherLoggerCallable,
         ]);
 
         /** @var LoggerAwareClass $loggerAwareInstance */

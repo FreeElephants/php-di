@@ -87,6 +87,9 @@ class Injector implements ContainerInterface
         if ($this->isLoggerInjectionRequired($instance)) {
             if(array_key_exists($class, $this->loggersMap)) {
                 $logger = $this->loggersMap[$class];
+                if(!$logger instanceof LoggerInterface && is_callable($logger)) {
+                    $logger = $logger($this);
+                }
             } else {
                 $logger = $this->getService(LoggerInterface::class);
             }
