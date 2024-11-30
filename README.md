@@ -65,9 +65,9 @@ return [
     ],
     'loggers' => [
        // For suitable logger injections use map, where keys are your services, that implement LoggerAwareInterface
-       // and value is logger instances
+       // and value is logger instances or callable with logic for instantiate it. 
        LoggerAwareClass::class        => $logger,
-       AnotherLoggerAwareClass::class => $anotherLogger,
+       AnotherLoggerAwareClass::class => fn(\Psr\Container\ContainerInterface $container) => new \Psr\Log\NullLogger(),
     ],   
 ];
 ```

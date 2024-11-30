@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Implicitly marking parameters as nullable is deprecated, the explicit nullable type must be used instead
+
+### Added
+- Loggers map callable members
+- PHP 8.4 mainline support
+- PHP 8.5 experimental support
+
 ## [4.0.1] - 2024-10-09
 
 ### Fixed
