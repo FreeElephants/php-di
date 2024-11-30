@@ -14,7 +14,7 @@ class ClassWithNullableConstructorArgs
      */
     private $anotherService;
 
-    public function __construct(AnotherServiceInterface $anotherService = null)
+    public function __construct(?AnotherServiceInterface $anotherService = null)
     {
         $this->anotherService = $anotherService ?: new DefaultAnotherServiceImpl();
     }

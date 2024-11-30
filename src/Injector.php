@@ -29,7 +29,7 @@ class Injector implements ContainerInterface
 
     private array $loggersMap = [];
 
-    public function __construct(LoggerInterface $logger = null)
+    public function __construct(?LoggerInterface $logger = null)
     {
         $this->loggerHelper = new LoggerHelper($logger ?: new NullLogger());
     }
@@ -97,7 +97,7 @@ class Injector implements ContainerInterface
         return $instance;
     }
 
-    public function registerService($implementation, string $interface = null): void
+    public function registerService($implementation, ?string $interface = null): void
     {
         $interface = $interface ?: $implementation;
         if (isset($this->serviceMap[$interface])) {
