@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.1.1] - 2025-03-21
+
+## Fixed
+- Inject NullLogger to LoggerAwareInterface services, when logger is not set to container 
+
 ## [4.1.0] - 2025-03-15
 
 ### Fixed
