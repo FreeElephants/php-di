@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.1.1] - 2025-03-21
 
 ## Fixed
-- Inject NullLogger to LoggerAwareInterface services, when logger is not set to container 
+- Inject NullLogger to LoggerAwareInterface services, when logger is not set in container 
 
 ## [4.1.0] - 2025-03-15
 
@@ -130,7 +130,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - All classes. 
 
-[Unreleased]: https://github.com/FreeElephants/php-di/compare/4.1.0...HEAD
+[Unreleased]: https://github.com/FreeElephants/php-di/compare/4.1.1...HEAD
+[4.1.1]: https://github.com/FreeElephants/php-di/compare/4.1.0...4.1.1
 [4.1.0]: https://github.com/FreeElephants/php-di/compare/4.0.1...4.1.0
 [4.0.1]: https://github.com/FreeElephants/php-di/compare/4.0.0...4.0.1
 [4.0.0]: https://github.com/FreeElephants/php-di/compare/3.1.1...4.0.0
