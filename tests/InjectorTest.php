@@ -228,6 +228,17 @@ class InjectorTest extends AbstractTestCase
         $this->assertSame($logger, $loggerAware->getLogger());
     }
 
+    public function testLoggerInjectionWithoutSpecifiedDefaultLoggerImpl()
+    {
+        $injector = new Injector();
+        $injector->enableLoggerAwareInjection(true);
+
+        /**@var LoggerAwareClass $loggerAware */
+        $loggerAware = $injector->createInstance(LoggerAwareClass::class);
+
+        $this->assertInstanceOf(NullLogger::class, $loggerAware->getLogger());
+    }
+
     public function testLoggerMap()
     {
         $logger = new NullLogger();

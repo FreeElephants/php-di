@@ -91,7 +91,7 @@ class Injector implements ContainerInterface
                     $logger = $logger($this);
                 }
             } else {
-                $logger = $this->getService(LoggerInterface::class);
+                $logger = $this->has(LoggerInterface::class) ? $this->getService(LoggerInterface::class) : new NullLogger();
             }
 
             $instance->setLogger($logger);
