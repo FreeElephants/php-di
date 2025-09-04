@@ -6,9 +6,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Inject logger to callable instances. 
+
 ## [4.1.1] - 2025-03-21
 
-## Fixed
+### Fixed
 - Inject NullLogger to LoggerAwareInterface services, when logger is not set in container 
 
 ## [4.1.0] - 2025-03-15

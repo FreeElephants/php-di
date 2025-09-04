@@ -8,6 +8,8 @@ use Fixture\Bar;
 use Fixture\ClassWithDefaultConstructorArgValue;
 use Fixture\Foo;
 use Fixture\LoggerAwareClass;
+use Fixture\LoggerExtendedSomeImpl;
+use Fixture\SomeInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
 
@@ -42,18 +44,24 @@ class InjectorBuilderTest extends AbstractTestCase
                 Bar::class                                 => function () use ($bar2) {
                     return $bar2;
                 },
+                SomeInterface::class => fn() => new LoggerExtendedSomeImpl(),
             ],
             'loggers'   => [
                 LoggerAwareClass::class        => new NullLogger(),
                 AnotherLoggerAwareClass::class => new NullLogger(),
+                LoggerExtendedSomeImpl::class => $someImplLogger = new NullLogger(),
             ],
         ]);
+
+        $injector->enableLoggerAwareInjection();
 
         $this->assertSame($bar2, $injector->getService(Bar::class));
         $this->assertInstanceOf(Foo::class, $injector->createInstance(Foo::class));
         $this->assertSame($anotherServiceInstance, $injector->getService(AnotherService::class));
         $this->assertSame(9000, $injector->get(ClassWithDefaultConstructorArgValue::class)->getValue());
 
-        $this->assertCount(2, $injector->getLoggersMap());
+        $this->assertSame($someImplLogger, $injector->getService(SomeInterface::class)->getLogger());
+
+        $this->assertCount(3, $injector->getLoggersMap());
     }
 }

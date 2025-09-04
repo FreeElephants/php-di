@@ -130,6 +130,23 @@ class Injector implements ContainerInterface
         } elseif ($service instanceof CallableBeanContainer) {
             $this->loggerHelper->logLazyLoading($type, $service);
             $service = $service();
+
+            if ($this->isLoggerInjectionRequired($service)) {
+                $class = get_class($service);
+                if(array_key_exists($class, $this->loggersMap)) {
+                    $logger = $this->loggersMap[$class];
+                    if(!$logger instanceof LoggerInterface && is_callable($logger)) {
+                        $logger = $logger($this);
+                    }
+                } else {
+                    $logger = $this->has(LoggerInterface::class) ? $this->getService(LoggerInterface::class) : new NullLogger();
+                }
+
+                $service->setLogger($logger);
+            }
+
+
+
             $this->setService($type, $service);
         }
 
