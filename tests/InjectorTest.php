@@ -13,6 +13,8 @@ use Fixture\ClassWithTypedScalarConstructorArgDefaultValue;
 use Fixture\DefaultAnotherServiceImpl;
 use Fixture\Foo;
 use Fixture\LoggerAwareClass;
+use Fixture\LoggerExtendedSomeImpl;
+use Fixture\SomeInterface;
 use Fixture\SomeService;
 use Fixture\SomeServiceInterface;
 use FreeElephants\DI\Exception\InvalidArgumentException;
@@ -259,6 +261,23 @@ class InjectorTest extends AbstractTestCase
         /** @var AnotherLoggerAwareClass $anotherLoggerAwareInstance */
         $anotherLoggerAwareInstance = $injector->get(AnotherLoggerAwareClass::class);
         $this->assertSame($anotherLogger, $anotherLoggerAwareInstance->getLogger());
+    }
+
+    public function testLoggerMapPolymorohic(): void
+    {
+        $logger = new NullLogger();
+
+        $injector = new Injector();
+        $injector->allowInstantiateNotRegisteredTypes(true);
+        $injector->enableLoggerAwareInjection();
+        $injector->registerService(LoggerExtendedSomeImpl::class, SomeInterface::class);
+        $injector->setLoggersMap([
+            LoggerExtendedSomeImpl::class        => $logger,
+        ]);
+
+        $loggerAwareImple = $injector->get(SomeInterface::class);
+
+        $this->assertSame($logger, $loggerAwareImple->getLogger());
     }
 
     public function testHandleInstantiateInterfaceError()

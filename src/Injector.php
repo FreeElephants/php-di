@@ -85,16 +85,7 @@ class Injector implements ContainerInterface
         $instance = new $class(...$constructorParams);
 
         if ($this->isLoggerInjectionRequired($instance)) {
-            if(array_key_exists($class, $this->loggersMap)) {
-                $logger = $this->loggersMap[$class];
-                if(!$logger instanceof LoggerInterface && is_callable($logger)) {
-                    $logger = $logger($this);
-                }
-            } else {
-                $logger = $this->has(LoggerInterface::class) ? $this->getService(LoggerInterface::class) : new NullLogger();
-            }
-
-            $instance->setLogger($logger);
+            $this->handleLoggerInjection($class, $instance);
         }
 
         return $instance;
@@ -130,6 +121,14 @@ class Injector implements ContainerInterface
         } elseif ($service instanceof CallableBeanContainer) {
             $this->loggerHelper->logLazyLoading($type, $service);
             $service = $service();
+
+            if ($this->isLoggerInjectionRequired($service)) {
+                $class = get_class($service);
+                $this->handleLoggerInjection($class, $service);
+            }
+
+
+
             $this->setService($type, $service);
         }
 
@@ -228,6 +227,20 @@ class Injector implements ContainerInterface
     private function isLoggerInjectionRequired(object $instance): bool
     {
         return $instance instanceof LoggerAwareInterface && $this->enableLoggerAwareInjection;
+    }
+
+    private function handleLoggerInjection(string $class, $service): void
+    {
+        if (array_key_exists($class, $this->loggersMap)) {
+            $logger = $this->loggersMap[$class];
+            if (!$logger instanceof LoggerInterface && is_callable($logger)) {
+                $logger = $logger($this);
+            }
+        } else {
+            $logger = $this->has(LoggerInterface::class) ? $this->getService(LoggerInterface::class) : new NullLogger();
+        }
+
+        $service->setLogger($logger);
     }
 }
 
