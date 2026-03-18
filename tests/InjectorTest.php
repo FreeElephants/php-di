@@ -301,7 +301,5 @@ class InjectorTest extends AbstractTestCase
             ],
         ]);
     }
-
-
 }
 
