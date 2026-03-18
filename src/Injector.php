@@ -144,7 +144,8 @@ class Injector implements ContainerInterface
         array $components,
         string $instancesKey = InjectorBuilder::INSTANCES_KEY,
         string $registerKey = InjectorBuilder::REGISTER_KEY,
-        string $callableKey = InjectorBuilder::CALLABLE_KEY
+        string $callableKey = InjectorBuilder::CALLABLE_KEY,
+        string $loggersKey = InjectorBuilder::LOGGERS_KEY
     ): void
     {
         $beansInstances = $components[$instancesKey] ?? [];
@@ -166,6 +167,11 @@ class Injector implements ContainerInterface
         $callableBeans = $components[$callableKey] ?? [];
         foreach ($callableBeans as $interface => $callable) {
             $this->registerService(new CallableBeanContainer($interface, $callable, $this), $interface);
+        }
+
+        $loggers = $components[$loggersKey] ?? [];
+        foreach ($loggers as $interface => $logger) {
+            $this->loggersMap[$interface] = $logger;
         }
     }
 
