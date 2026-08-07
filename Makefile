@@ -5,7 +5,7 @@ build-docker:
 	docker build . -t $(PHP_DEV_IMAGE):$(REVISION)
 	
 install:
-	mkdir dev-tools-reports
+	mkdir -p dev-tools-reports
 	composer install
 
 test:
