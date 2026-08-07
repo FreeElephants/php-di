@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- PhpunitMocksConstructorInjectionCodeGenerator for faster tdd flow (see tests, Luke =) )
+
 ## [4.1.2] - 2026-03-18
 
 ### Fixed
