@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - PhpunitMocksConstructorInjectionCodeGenerator for faster tdd flow (see tests, Luke =) )
+- Internal: php cs fixer check
 
 ### Changed:
 - Internal: Rename make targets docker -> build-docker, phpunit -> test
