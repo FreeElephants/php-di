@@ -1,6 +1,8 @@
+/.env
+
 /.idea/
 /.phpunit.result.cache
-/coverage/
+/dev-tools-reports/
 
 /composer.lock
 
