@@ -11,7 +11,6 @@ use Psr\Log\LoggerInterface;
  */
 class LoggerHelper implements LoggerAwareInterface
 {
-
     use LoggerAwareTrait;
 
     public function __construct(LoggerInterface $logger)
@@ -23,7 +22,7 @@ class LoggerHelper implements LoggerAwareInterface
     {
         $msg = 'Requested service with type ' . $interface . ' is not set. Exception will be thrown. ';
         $context = [
-            'typeName' => $interface
+            'typeName' => $interface,
         ];
         $this->logger->critical($msg, $context);
     }
@@ -53,7 +52,7 @@ class LoggerHelper implements LoggerAwareInterface
     {
         $context = [
             'typeName' => $typeName,
-            'instance' => $this->stringifyService($instance)
+            'instance' => $this->stringifyService($instance),
         ];
         $this->logger->critical('Given instance not belong to this type. Exception will be thrown. ', $context);
     }
@@ -67,6 +66,7 @@ class LoggerHelper implements LoggerAwareInterface
             'oldInstance' => $this->stringifyService($previousServiceInstance),
         ];
         $this->logger->debug($debugMsg, $context);
+
         return [$debugMsg, $context];
     }
 
@@ -93,9 +93,9 @@ class LoggerHelper implements LoggerAwareInterface
 
     private function stringifyService($implementation): string
     {
-        if($implementation instanceof CallableBeanContainer) {
+        if ($implementation instanceof CallableBeanContainer) {
             $implementation = 'user defined callable';
-        } elseif(is_object($implementation)) {
+        } elseif (is_object($implementation)) {
             $implementation = get_class($implementation);
         }
 

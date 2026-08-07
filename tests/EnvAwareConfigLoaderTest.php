@@ -4,7 +4,6 @@ namespace FreeElephants\DI;
 
 class EnvAwareConfigLoaderTest extends AbstractTestCase
 {
-
     public function testLoadComponentsWithEnv()
     {
         $configLoader = new EnvAwareConfigLoader(self::FIXTURE_PATH);
@@ -39,5 +38,4 @@ class EnvAwareConfigLoaderTest extends AbstractTestCase
         $components = $configLoader->readConfig('components-nested');
         $this->assertSame('bar-test', $components['level-1']['level-2']['foo']);
     }
-
 }

@@ -7,7 +7,6 @@ namespace Fixture;
  */
 class ClassWithDefaultConstructorArgValue
 {
-
     /**
      * @var int
      */

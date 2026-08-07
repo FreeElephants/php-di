@@ -18,7 +18,6 @@ use Psr\Log\NullLogger;
  */
 class InjectorBuilderTest extends AbstractTestCase
 {
-
     public function testBuildFromArray()
     {
         $builder = new InjectorBuilder();
@@ -32,7 +31,7 @@ class InjectorBuilderTest extends AbstractTestCase
                 $anotherServiceInstance,
             ],
             'register'  => [
-                Foo::class
+                Foo::class,
             ],
             'callable'  => [
                 ClassWithDefaultConstructorArgValue::class => [
@@ -44,12 +43,12 @@ class InjectorBuilderTest extends AbstractTestCase
                 Bar::class                                 => function () use ($bar2) {
                     return $bar2;
                 },
-                SomeInterface::class => fn() => new LoggerExtendedSomeImpl(),
+                SomeInterface::class                       => fn () => new LoggerExtendedSomeImpl(),
             ],
             'loggers'   => [
                 LoggerAwareClass::class        => new NullLogger(),
                 AnotherLoggerAwareClass::class => new NullLogger(),
-                LoggerExtendedSomeImpl::class => $someImplLogger = new NullLogger(),
+                LoggerExtendedSomeImpl::class  => $someImplLogger = new NullLogger(),
             ],
         ]);
 

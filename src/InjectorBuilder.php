@@ -8,9 +8,9 @@ namespace FreeElephants\DI;
 class InjectorBuilder
 {
     public const INSTANCES_KEY = 'instances';
-    public const REGISTER_KEY  = 'register';
-    public const CALLABLE_KEY  = 'callable';
-    public const LOGGERS_KEY   = 'loggers';
+    public const REGISTER_KEY = 'register';
+    public const CALLABLE_KEY = 'callable';
+    public const LOGGERS_KEY = 'loggers';
 
     private string $instancesKey;
     private string $registerKey;
@@ -22,8 +22,7 @@ class InjectorBuilder
         string $registerKey = self::REGISTER_KEY,
         string $callableKey = self::CALLABLE_KEY,
         string $loggersKey = self::LOGGERS_KEY
-    )
-    {
+    ) {
         $this->instancesKey = $instancesKey;
         $this->registerKey = $registerKey;
         $this->callableKey = $callableKey;

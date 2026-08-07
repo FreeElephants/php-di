@@ -29,7 +29,6 @@ use Psr\Log\NullLogger;
  */
 class InjectorTest extends AbstractTestCase
 {
-
     public function testInjectionToConstructor()
     {
         $injector = new Injector();
@@ -38,7 +37,7 @@ class InjectorTest extends AbstractTestCase
 
         $foo = $injector->createInstance(Foo::class);
 
-        /**@var Foo $foo */
+        // @var Foo $foo
         $this->assertSame($bar, $foo->getBar());
     }
 
@@ -74,7 +73,7 @@ class InjectorTest extends AbstractTestCase
 
         $injector->registerService(SomeService::class, SomeServiceInterface::class);
         $injector->registerService(AnotherService::class, AnotherServiceInterface::class);
-        /**@var SomeServiceInterface $someService */
+        // @var SomeServiceInterface $someService
         $someService = $injector->getService(SomeServiceInterface::class);
         $anotherService = $injector->getService(AnotherServiceInterface::class);
 
@@ -95,11 +94,13 @@ class InjectorTest extends AbstractTestCase
         $injector = new Injector();
 
         $injector->allowNullableConstructorArgs(true);
-        /**@var ClassWithNullableConstructorArgs $classWithNullableConstructorArgsInstance */
+        // @var ClassWithNullableConstructorArgs $classWithNullableConstructorArgsInstance
         $classWithNullableConstructorArgsInstance = $injector->createInstance(ClassWithNullableConstructorArgs::class);
 
-        $this->assertInstanceOf(DefaultAnotherServiceImpl::class,
-            $classWithNullableConstructorArgsInstance->getAnotherService());
+        $this->assertInstanceOf(
+            DefaultAnotherServiceImpl::class,
+            $classWithNullableConstructorArgsInstance->getAnotherService(),
+        );
     }
 
     public function testGetNotRegisteredServiceWithNotAllowedNullableConstructorArgs()
@@ -116,7 +117,7 @@ class InjectorTest extends AbstractTestCase
     {
         $injector = new Injector();
 
-        /**@var ClassWithDefaultConstructorArgValue $instance */
+        // @var ClassWithDefaultConstructorArgValue $instance
         $instance = $injector->createInstance(ClassWithDefaultConstructorArgValue::class);
 
         $this->assertSame(100500, $instance->getValue());
@@ -151,7 +152,7 @@ class InjectorTest extends AbstractTestCase
         $injector->merge([
             'instances' => [
                 Bar::class => $bar2,
-            ]
+            ],
         ]);
 
         $this->assertSame($bar2, $injector->getService(Bar::class));
@@ -177,7 +178,7 @@ class InjectorTest extends AbstractTestCase
         $this->assertTrue($injector->hasImplementation(Injector::class));
     }
 
-    public function testDefaultScalarValue_with_AllowedNotRegisteredTypesInstantiation()
+    public function testDefaultScalarValueWithAllowedNotRegisteredTypesInstantiation()
     {
         $injector = new Injector();
         $injector->allowInstantiateNotRegisteredTypes(true);
@@ -224,7 +225,7 @@ class InjectorTest extends AbstractTestCase
         $injector->setService(LoggerInterface::class, $logger);
         $injector->enableLoggerAwareInjection(true);
 
-        /**@var LoggerAwareClass $loggerAware */
+        // @var LoggerAwareClass $loggerAware
         $loggerAware = $injector->createInstance(LoggerAwareClass::class);
 
         $this->assertSame($logger, $loggerAware->getLogger());
@@ -235,7 +236,7 @@ class InjectorTest extends AbstractTestCase
         $injector = new Injector();
         $injector->enableLoggerAwareInjection(true);
 
-        /**@var LoggerAwareClass $loggerAware */
+        // @var LoggerAwareClass $loggerAware
         $loggerAware = $injector->createInstance(LoggerAwareClass::class);
 
         $this->assertInstanceOf(NullLogger::class, $loggerAware->getLogger());
@@ -245,7 +246,7 @@ class InjectorTest extends AbstractTestCase
     {
         $logger = new NullLogger();
         $anotherLogger = new NullLogger();
-        $anotherLoggerCallable = fn() => $anotherLogger;
+        $anotherLoggerCallable = fn () => $anotherLogger;
 
         $injector = new Injector();
         $injector->allowInstantiateNotRegisteredTypes(true);
@@ -302,4 +303,3 @@ class InjectorTest extends AbstractTestCase
         ]);
     }
 }
-
