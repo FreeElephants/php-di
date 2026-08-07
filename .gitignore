@@ -1,7 +1,10 @@
 /.env
 
 /.idea/
+
 /.phpunit.result.cache
+/.php-cs-fixer.cache
+
 /dev-tools-reports/
 
 /composer.lock

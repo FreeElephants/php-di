@@ -3,7 +3,6 @@
 
 $finder = PhpCsFixer\Finder::create()
     ->in([
-        './config/',
         './src/',
         './tests/',
     ]);
