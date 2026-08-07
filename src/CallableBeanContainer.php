@@ -18,7 +18,7 @@ class CallableBeanContainer
         if (is_callable($callable)) {
             $function = $callable;
             $args = [$container, $interface];
-        } elseif(is_array($callable)) {
+        } elseif (is_array($callable)) {
             $function = array_shift($callable);
             $args = array_merge([$container], $callable);
         } else {
@@ -29,9 +29,6 @@ class CallableBeanContainer
         $this->args = $args;
     }
 
-    /**
-     * @return mixed
-     */
     public function __invoke()
     {
         return call_user_func($this->function, ...$this->args);

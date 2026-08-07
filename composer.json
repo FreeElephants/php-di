@@ -9,7 +9,9 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.6"
+        "phpunit/phpunit": "^9.6",
+        "free-elephants/php-cs-fixer-ruleset": "^1.0",
+        "friendsofphp/php-cs-fixer": "^3.95"
     },
     "license": "BSD-2-Clause",
     "authors": [

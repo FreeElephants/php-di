@@ -14,7 +14,6 @@ use Psr\Log\NullLogger;
  */
 class Injector implements ContainerInterface
 {
-
     private array $serviceMap = [];
 
     private LoggerHelper $loggerHelper;
@@ -41,15 +40,16 @@ class Injector implements ContainerInterface
 
     public function setService(string $typeName, $service): void
     {
-        if ($this->useIdAsTypeName && false === $service instanceof $typeName) {
+        if ($this->useIdAsTypeName && $service instanceof $typeName === false) {
             $this->loggerHelper->logNotMatchedTypeInstance($typeName, $service);
+
             throw new InvalidArgumentException('Given instance not belong to this type. ');
-        } else {
-            if (isset($this->serviceMap[$typeName]) && is_object($this->serviceMap[$typeName])) {
-                $this->loggerHelper->logServiceInstanceReplacing($typeName, $service, $this->serviceMap[$typeName]);
-            }
-            $this->serviceMap[$typeName] = $service;
         }
+        if (isset($this->serviceMap[$typeName]) && is_object($this->serviceMap[$typeName])) {
+            $this->loggerHelper->logServiceInstanceReplacing($typeName, $service, $this->serviceMap[$typeName]);
+        }
+        $this->serviceMap[$typeName] = $service;
+
         $this->loggerHelper->logServiceSetting($typeName, $service);
     }
 
@@ -58,6 +58,7 @@ class Injector implements ContainerInterface
         $reflectedClass = new \ReflectionClass($class);
         if ($reflectedClass->isAbstract() || $reflectedClass->isInterface()) {
             $message = sprintf('%s is abstraction, implementation should be registered as component', $class);
+
             throw new MissingDependencyException($message);
         }
         $constructorParams = [];
@@ -66,6 +67,7 @@ class Injector implements ContainerInterface
             foreach ($signatureArgs as $arg) {
                 if ($arg->hasType() && !$arg->getType()->isBuiltin()) {
                     $serviceClassName = $arg->getType()->getName();
+
                     try {
                         $constructorParams[] = $this->getService($serviceClassName);
                     } catch (MissingDependencyException $e) {
@@ -73,6 +75,7 @@ class Injector implements ContainerInterface
                             $constructorParams[] = $arg->getDefaultValue();
                         } else {
                             $extendedMessage = sprintf('%s [Required in %s constructor]', $e->getMessage(), $class);
+
                             throw new MissingDependencyException($extendedMessage, 0, $e);
                         }
                     }
@@ -109,6 +112,7 @@ class Injector implements ContainerInterface
                 $this->setService($type, $this->createInstance($type));
             } else {
                 $this->loggerHelper->logRequestNotDeterminedService($type);
+
                 throw new MissingDependencyException('Requested service with type ' . $type . ' is not set');
             }
         }
@@ -146,8 +150,7 @@ class Injector implements ContainerInterface
         string $registerKey = InjectorBuilder::REGISTER_KEY,
         string $callableKey = InjectorBuilder::CALLABLE_KEY,
         string $loggersKey = InjectorBuilder::LOGGERS_KEY
-    ): void
-    {
+    ): void {
         $beansInstances = $components[$instancesKey] ?? [];
         foreach ($beansInstances as $interface => $instance) {
             if (is_int($interface)) {
@@ -195,7 +198,7 @@ class Injector implements ContainerInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function get($id)
     {
@@ -203,7 +206,7 @@ class Injector implements ContainerInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function has($id): bool
     {
@@ -249,4 +252,3 @@ class Injector implements ContainerInterface
         $service->setLogger($logger);
     }
 }
-

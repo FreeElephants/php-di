@@ -11,7 +11,6 @@ use Psr\Log\LoggerInterface;
  */
 class AnotherLoggerAwareClass implements LoggerAwareInterface
 {
-
     use LoggerAwareTrait;
 
     public function getLogger(): LoggerInterface
@@ -19,4 +18,3 @@ class AnotherLoggerAwareClass implements LoggerAwareInterface
         return $this->logger;
     }
 }
-

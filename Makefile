@@ -1,6 +1,12 @@
-build:
-	docker build . -t free-elephants/php-di-dev
-	./bin/composer install
+ENV_FILE ?= .env
+-include $(ENV_FILE)
+
+build-docker:
+	docker build . -t $(PHP_DEV_IMAGE):$(REVISION)
+	
+install:
+	mkdir -p dev-tools-reports
+	composer install
 
 test:
-	docker run --rm -v $(PWD):/var/www free-elephants/php-di-dev vendor/bin/phpunit
+	vendor/bin/phpunit

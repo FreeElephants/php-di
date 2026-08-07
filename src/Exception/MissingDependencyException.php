@@ -2,7 +2,4 @@
 
 namespace FreeElephants\DI\Exception;
 
-class MissingDependencyException extends OutOfBoundsException
-{
-
-}
+class MissingDependencyException extends OutOfBoundsException {}

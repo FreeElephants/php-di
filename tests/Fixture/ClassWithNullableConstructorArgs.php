@@ -7,8 +7,6 @@ namespace Fixture;
  */
 class ClassWithNullableConstructorArgs
 {
-
-
     /**
      * @var AnotherServiceInterface
      */
@@ -25,7 +23,4 @@ class ClassWithNullableConstructorArgs
     }
 }
 
-class DefaultAnotherServiceImpl implements AnotherServiceInterface
-{
-
-}
+class DefaultAnotherServiceImpl implements AnotherServiceInterface {}
